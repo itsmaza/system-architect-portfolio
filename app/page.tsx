@@ -1101,7 +1101,7 @@ export default function Portfolio() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="font-mono text-[12px] text-white/35 tracking-tight">
-              mazaharul.
+              Mazaharul.
             </span>
 
             <span className="text-[11px] text-white/25 flex items-center gap-2">
