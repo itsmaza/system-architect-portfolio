@@ -3,19 +3,20 @@
 /* ═══════════════════════════════════════════════════════════════════════════
  *
  *  MAZAHARUL ISLAM — Full Stack Software Engineer Portfolio
- *  ▸ Soft Dark Theme — Balanced, Readable, Modern
+ *  ▸ Refined Minimal Dark Theme (Enhanced Visibility)
  *  ▸ Next.js 14  ▸ TypeScript  ▸ Tailwind  ▸ Framer Motion
  *
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-import { useState, useEffect, JSX } from "react";
-import { motion, AnimatePresence, cubicBezier } from "framer-motion";
+import { useState, useEffect, JSX, useRef } from "react";
+import { motion, AnimatePresence, cubicBezier, useScroll, useTransform } from "framer-motion";
 import {
   Mail, Github, Linkedin, ExternalLink, MapPin, Code2,
   Terminal, Monitor, Server, Wrench, ChevronDown, ArrowRight,
   MessageCircle, Menu, X, Briefcase, Rocket, BookOpen, Award,
   Send, Heart, CheckCircle2, Circle, Zap, Database,
-  ArrowUpRight, Play, Target, TrendingUp, Copy, Check,
+  ArrowUpRight, Target, TrendingUp, Copy, Check, Sparkles,
+  Layers, Star, Clock, ChevronRight,
 } from "lucide-react";
 
 import {
@@ -24,24 +25,39 @@ import {
 } from "@/lib/data";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ANIMATIONS — Lightweight
+   ANIMATIONS
    ═══════════════════════════════════════════════════════════════════════════ */
 
-const ease = cubicBezier(0.25, 0.1, 0.25, 1);
+const ease = cubicBezier(0.16, 1, 0.3, 1);
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
 };
 
-const popIn = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.45, ease } },
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.6, ease } },
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.92 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease } },
+};
+
+const slideRight = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease } },
 };
 
 const stagger = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+};
+
+const staggerSlow = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -86,26 +102,50 @@ const NAV = [
 ] as const;
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SOFT BACKGROUND
+   NOISE TEXTURE OVERLAY
    ═══════════════════════════════════════════════════════════════════════════ */
-function SoftBg() {
+function NoiseOverlay() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-0">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[radial-gradient(ellipse,rgba(99,102,241,0.045),transparent_70%)]" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[400px] bg-[radial-gradient(circle,rgba(99,102,241,0.025),transparent_70%)]" />
+    <div
+      className="pointer-events-none fixed inset-0 z-[1] opacity-[0.02]"
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+      }}
+    />
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AMBIENT BACKGROUND
+   ═══════════════════════════════════════════════════════════════════════════ */
+function AmbientBg() {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {/* Top ambient */}
+      <div className="absolute -top-[300px] left-1/2 -translate-x-1/2 w-[1200px] h-[800px] bg-[radial-gradient(ellipse,rgba(255,255,255,0.025),transparent_60%)]" />
+      {/* Grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)`,
+          backgroundSize: "80px 80px",
+        }}
+      />
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SECTION LABEL
+   SECTION HEADER
    ═══════════════════════════════════════════════════════════════════════════ */
-function SectionLabel({
+function SectionHeader({
+  number,
   tag,
   title,
   desc,
   center = false,
 }: {
+  number: string;
   tag: string;
   title: string;
   desc: string;
@@ -115,18 +155,22 @@ function SectionLabel({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: "-80px" }}
       variants={fadeUp}
-      className={`mb-12 ${center ? "text-center" : ""}`}
+      className={`mb-16 ${center ? "text-center" : ""}`}
     >
-      <p className="text-[11px] font-mono tracking-[0.18em] uppercase text-indigo-400/70 mb-3">
-        {tag}
-      </p>
-      <h2 className="text-[28px] sm:text-[34px] font-semibold text-slate-100 tracking-[-0.02em] leading-tight">
+      <div className={`flex items-center gap-3 mb-5 ${center ? "justify-center" : ""}`}>
+        <span className="text-[11px] font-mono text-white/35">{number}</span>
+        <span className="w-8 h-px bg-white/15" />
+        <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/45">
+          {tag}
+        </span>
+      </div>
+      <h2 className="text-[32px] sm:text-[40px] font-light text-white tracking-[-0.03em] leading-[1.1]">
         {title}
       </h2>
       <p
-        className={`text-[13px] text-slate-400 mt-2.5 leading-relaxed ${
+        className={`text-[14px] text-white/50 mt-3 leading-relaxed font-light ${
           center ? "max-w-md mx-auto" : "max-w-lg"
         }`}
       >
@@ -152,7 +196,7 @@ function Typer({ texts }: { texts: string[] }) {
         if (!del) {
           setText(t.slice(0, ci + 1));
           setCi((p) => p + 1);
-          if (ci + 1 === t.length) setTimeout(() => setDel(true), 2000);
+          if (ci + 1 === t.length) setTimeout(() => setDel(true), 2200);
         } else {
           setText(t.slice(0, ci - 1));
           setCi((p) => p - 1);
@@ -162,21 +206,47 @@ function Typer({ texts }: { texts: string[] }) {
           }
         }
       },
-      del ? 30 : 65
+      del ? 25 : 55
     );
     return () => clearTimeout(timer);
   }, [ci, del, idx, texts]);
 
   return (
-    <span className="text-indigo-300">
+    <span className="text-white/60">
       {text}
-      <span className="animate-pulse text-indigo-400/60">_</span>
+      <span className="animate-pulse text-white/35">|</span>
     </span>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   MAIN
+   GLASS CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+function GlassCard({
+  children,
+  className = "",
+  hover = true,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  hover?: boolean;
+}) {
+  return (
+    <div
+      className={`
+        rounded-2xl bg-white/[0.035] border border-white/[0.08]
+        backdrop-blur-sm
+        ${hover ? "hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-500" : ""}
+        ${className}
+      `}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════════════ */
 
 export default function Portfolio() {
@@ -185,6 +255,14 @@ export default function Portfolio() {
   const [active, setActive] = useState("");
   const [copied, setCopied] = useState(false);
   const [progress, setProgress] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   useEffect(() => {
     const fn = () => {
@@ -212,60 +290,54 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f1120] text-slate-300 antialiased scroll-smooth selection:bg-indigo-500/20 selection:text-indigo-200">
-      <SoftBg />
+    <div className="min-h-screen bg-[#09090b] text-white/70 antialiased scroll-smooth selection:bg-white/15 selection:text-white">
+      <AmbientBg />
+      <NoiseOverlay />
 
       {/* Progress bar */}
       <div
-        className="fixed top-0 left-0 h-[2px] bg-indigo-500/60 z-[60] origin-left transition-transform duration-100"
-        style={{ transform: `scaleX(${progress})` }}
+        className="fixed top-0 left-0 h-px bg-white/50 z-[60] origin-left"
+        style={{ transform: `scaleX(${progress})`, transition: "transform 0.1s" }}
       />
 
       {/* ══════════════════════════════════════════════════════════════
           NAVIGATION
           ══════════════════════════════════════════════════════════════ */}
       <nav
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#0f1120]/80 backdrop-blur-xl border-b border-slate-700/30 shadow-lg shadow-black/10"
+            ? "bg-[#09090b]/80 backdrop-blur-2xl border-b border-white/[0.06]"
             : ""
         }`}
       >
-        <div className="max-w-5xl mx-auto px-5 flex items-center justify-between h-[60px]">
+        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
           <a
             href="#"
-            className="font-mono text-[13px] font-semibold text-slate-200 hover:text-white transition-colors"
+            className="font-mono text-[13px] font-medium text-white/80 hover:text-white transition-colors duration-300 tracking-tight"
           >
-            Mazaharul<span className="text-indigo-400"></span>
+            Mazaharul.
           </a>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden md:flex items-center gap-1">
             {NAV.map((n) => (
               <a
                 key={n.id}
                 href={`#${n.id}`}
-                className={`relative text-[12px] tracking-wide transition-colors duration-200 pb-1 ${
+                className={`relative px-3.5 py-2 rounded-lg text-[12px] tracking-wide transition-all duration-300 ${
                   active === n.id
-                    ? "text-indigo-300"
-                    : "text-slate-400 hover:text-slate-200"
+                    ? "text-white/90 bg-white/[0.06]"
+                    : "text-white/40 hover:text-white/65 hover:bg-white/[0.03]"
                 }`}
               >
                 {n.label}
-                {active === n.id && (
-                  <motion.span
-                    layoutId="navDot"
-                    className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-indigo-400"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
               </a>
             ))}
           </div>
 
           <a
             href="#contact"
-            className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 hover:border-indigo-400/30 transition-all"
+            className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full text-[12px] font-medium bg-white/[0.08] text-white/70 border border-white/[0.12] hover:bg-white/[0.14] hover:text-white/90 hover:border-white/[0.18] transition-all duration-300"
           >
             Let&apos;s Talk
             <ArrowRight className="w-3 h-3" />
@@ -274,7 +346,7 @@ export default function Portfolio() {
           <button
             aria-label="Menu"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-slate-400"
+            className="md:hidden p-2 text-white/45 hover:text-white/70 transition-colors"
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -287,23 +359,33 @@ export default function Portfolio() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden overflow-hidden bg-[#131627]/95 backdrop-blur-xl border-b border-slate-700/30"
+              transition={{ duration: 0.3, ease }}
+              className="md:hidden overflow-hidden bg-[#09090b]/95 backdrop-blur-2xl border-b border-white/[0.06]"
             >
-              <div className="px-5 py-4 space-y-1">
+              <div className="px-6 py-5 space-y-1">
                 {NAV.map((n) => (
                   <a
                     key={n.id}
                     href={`#${n.id}`}
                     onClick={() => setMenuOpen(false)}
-                    className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                    className={`block px-4 py-3 rounded-xl text-sm transition-all duration-200 ${
                       active === n.id
-                        ? "text-indigo-300 bg-indigo-500/10"
-                        : "text-slate-400 hover:text-slate-200 hover:bg-white/[0.03]"
+                        ? "text-white/90 bg-white/[0.06]"
+                        : "text-white/45 hover:text-white/70 hover:bg-white/[0.03]"
                     }`}
                   >
                     {n.label}
                   </a>
                 ))}
+                <div className="pt-3">
+                  <a
+                    href="#contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="block text-center px-4 py-3 rounded-xl text-sm bg-white/[0.08] text-white/70 border border-white/[0.12]"
+                  >
+                    Let&apos;s Talk →
+                  </a>
+                </div>
               </div>
             </motion.div>
           )}
@@ -313,36 +395,41 @@ export default function Portfolio() {
       {/* ══════════════════════════════════════════════════════════════
           HERO
           ══════════════════════════════════════════════════════════════ */}
-      <section id="hero" className="relative min-h-screen flex items-center pt-14">
-        <div className="max-w-5xl mx-auto px-5 w-full py-20 sm:py-28">
-          <div className="grid lg:grid-cols-[1fr_320px] gap-16 items-center">
+      <section id="hero" ref={heroRef} className="relative min-h-screen flex items-center">
+        <motion.div
+          style={{ opacity: heroOpacity, y: heroY }}
+          className="max-w-6xl mx-auto px-6 w-full py-24 sm:py-32"
+        >
+          <div className="grid lg:grid-cols-[1fr_340px] gap-20 items-center">
             <motion.div
               initial="hidden"
               animate="visible"
-              variants={stagger}
+              variants={staggerSlow}
               className="order-2 lg:order-1"
             >
-              {/* Available */}
-              <motion.div variants={fadeUp} className="mb-7">
-                <span className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-emerald-500/[0.08] border border-emerald-500/15 text-[11px] font-medium text-emerald-300/80">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              {/* Status badge */}
+              <motion.div variants={fadeUp} className="mb-10">
+                <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.05] border border-white/[0.1] text-[11px] font-medium text-white/55">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400/60 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400/80" />
                   </span>
-                  Available for work
+                  Available for opportunities
                 </span>
               </motion.div>
 
-              {/* Name */}
-              <motion.div variants={fadeUp} className="mb-6">
-                <p className="text-[13px] text-slate-500 mb-2 font-mono flex items-center gap-2">
-                  <span className="w-5 h-px bg-indigo-500/40" />
-                  Hi, I&apos;m
+              {/* Name & Title */}
+              <motion.div variants={fadeUp} className="mb-8">
+                <p className="text-[13px] text-white/30 mb-3 font-mono flex items-center gap-3">
+                  <span className="w-6 h-px bg-white/20" />
+                  Hello, I&apos;m
                 </p>
-                <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-bold tracking-[-0.03em] text-white leading-[1.1] mb-4">
-                  {PERSONAL.name}
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extralight tracking-[-0.04em] text-white leading-[1.05] mb-5">
+                  {PERSONAL.name.split(" ")[0]}
+                  <br />
+                  <span className="text-white/55">{PERSONAL.name.split(" ").slice(1).join(" ")}</span>
                 </h1>
-                <div className="text-lg sm:text-xl font-mono h-7">
+                <div className="text-lg sm:text-xl font-mono h-7 font-light">
                   <Typer
                     texts={[
                       "Full Stack Engineer",
@@ -354,54 +441,52 @@ export default function Portfolio() {
                 </div>
               </motion.div>
 
-              {/* Desc */}
+              {/* Description */}
               <motion.p
                 variants={fadeUp}
-                className="text-[14px] text-slate-400 leading-[1.85] max-w-lg mb-7"
+                className="text-[15px] text-white/40 leading-[1.9] max-w-lg mb-10 font-light"
               >
                 {PERSONAL.description}
               </motion.p>
 
-              {/* Info chips */}
+              {/* Info Line */}
               <motion.div
                 variants={fadeUp}
-                className="flex flex-wrap gap-2 mb-8"
+                className="flex flex-wrap items-center gap-5 mb-10 text-[12px] text-white/35"
               >
                 {[
-                  { icon: <MapPin className="w-3 h-3" />, t: PERSONAL.location },
-                  { icon: <Briefcase className="w-3 h-3" />, t: `${PERSONAL.experience}+ Years` },
-                  { icon: <Zap className="w-3 h-3" />, t: PERSONAL.title },
+                  { icon: <MapPin className="w-3.5 h-3.5" />, t: PERSONAL.location },
+                  { icon: <Clock className="w-3.5 h-3.5" />, t: `${PERSONAL.experience}+ Years Exp.` },
+                  { icon: <Layers className="w-3.5 h-3.5" />, t: PERSONAL.title },
                 ].map((c, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700/40 text-[11px] text-slate-400"
-                  >
-                    <span className="text-indigo-400/50">{c.icon}</span>
+                  <span key={i} className="inline-flex items-center gap-2">
+                    <span className="text-white/25">{c.icon}</span>
                     {c.t}
+                    {i < 2 && <span className="ml-5 w-px h-3 bg-white/[0.1]" />}
                   </span>
                 ))}
               </motion.div>
 
               {/* CTAs */}
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-10">
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-12">
                 <a
                   href="#projects"
-                  className="group inline-flex items-center gap-2.5 px-6 py-2.5 rounded-lg bg-indigo-500 text-white text-[13px] font-medium hover:bg-indigo-400 transition-colors shadow-lg shadow-indigo-500/20"
+                  className="group inline-flex items-center gap-3 px-7 py-3 rounded-full bg-white text-[#09090b] text-[13px] font-medium hover:bg-white/90 transition-all duration-300 shadow-2xl shadow-white/10"
                 >
-                  View Work
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  View Projects
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
                 </a>
                 <a
                   href="#contact"
-                  className="group inline-flex items-center gap-2.5 px-6 py-2.5 rounded-lg border border-slate-600/60 text-slate-300 text-[13px] font-medium hover:border-slate-500 hover:text-white hover:bg-white/[0.03] transition-all"
+                  className="group inline-flex items-center gap-3 px-7 py-3 rounded-full border border-white/[0.12] text-white/60 text-[13px] font-medium hover:border-white/[0.22] hover:text-white/80 hover:bg-white/[0.04] transition-all duration-300"
                 >
-                  Contact
+                  Get in Touch
                   <Send className="w-3.5 h-3.5" />
                 </a>
               </motion.div>
 
               {/* Socials */}
-              <motion.div variants={fadeUp} className="flex items-center gap-2">
+              <motion.div variants={fadeUp} className="flex items-center gap-1">
                 {SOCIAL_LINKS.map((s) => (
                   <a
                     key={s.label}
@@ -409,7 +494,7 @@ export default function Portfolio() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={s.label}
-                    className="p-2.5 rounded-lg text-slate-500 hover:text-indigo-300 hover:bg-indigo-500/[0.06] transition-all duration-200"
+                    className="p-3 rounded-xl text-white/25 hover:text-white/55 hover:bg-white/[0.05] transition-all duration-300"
                   >
                     {socialIcon(s.icon)}
                   </a>
@@ -417,233 +502,252 @@ export default function Portfolio() {
               </motion.div>
             </motion.div>
 
-            {/* Image */}
+            {/* Profile Image */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3, ease }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4, ease }}
               className="order-1 lg:order-2 flex justify-center"
             >
               <div className="relative group">
-                {/* Soft glow behind image */}
-                <div className="absolute -inset-4 rounded-3xl bg-indigo-500/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Outer glow */}
+                <div className="absolute -inset-8 rounded-[32px] bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                <div className="relative w-52 h-52 sm:w-60 sm:h-60 rounded-2xl overflow-hidden border border-slate-700/50 bg-slate-800/50 shadow-xl shadow-black/20 group-hover:border-slate-600/50 transition-all duration-300">
+                {/* Image container */}
+                <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden border border-white/[0.1] bg-white/[0.03] group-hover:border-white/[0.16] transition-all duration-500">
                   <img
                     src="/IMG_6403.PNG"
                     alt={PERSONAL.name}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                   />
+                  {/* Image overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#09090b]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
 
-                {/* Badge */}
-                <div className="absolute -bottom-3 -right-3 px-3 py-1.5 rounded-lg bg-[#151a30] border border-slate-700/50 shadow-lg">
-                  <span className="flex items-center gap-1.5 text-[10px] font-mono text-slate-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    {PERSONAL.experience}+ yrs
+                {/* Experience badge */}
+                <div className="absolute -bottom-4 -right-4 px-4 py-2 rounded-xl bg-[#09090b] border border-white/[0.12] shadow-2xl shadow-black/50">
+                  <span className="flex items-center gap-2 text-[11px] font-mono text-white/60">
+                    <Star className="w-3 h-3 text-white/35" />
+                    {PERSONAL.experience}+ years
                   </span>
+                </div>
+
+                {/* Top-left decoration */}
+                <div className="absolute -top-3 -left-3 w-6 h-6 rounded-lg border border-white/[0.1] bg-[#09090b] flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white/35" />
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* Scroll */}
+          {/* Scroll indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="flex justify-center mt-20"
+            transition={{ delay: 2 }}
+            className="flex justify-center mt-24"
           >
-            <a href="#about" className="text-slate-600 hover:text-slate-400 transition-colors">
-              <ChevronDown className="w-5 h-5 animate-bounce" />
+            <a
+              href="#about"
+              className="flex flex-col items-center gap-2 text-white/20 hover:text-white/40 transition-colors duration-300"
+            >
+              <span className="text-[10px] font-mono tracking-widest uppercase">Scroll</span>
+              <ChevronDown className="w-4 h-4 animate-bounce" />
             </a>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          ABOUT — DSA
+          ABOUT — DSA / ALGORITHMIC THINKING
           ══════════════════════════════════════════════════════════════ */}
-      <section id="about" className="py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-5">
-          <SectionLabel
+      <section id="about" className="py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeader
+            number="01"
             tag="About"
             title="Algorithmic Thinking"
-            desc="Clean architecture, time & space complexity, and measurable efficiency in every system."
+            desc="Clean architecture, time & space complexity, and measurable efficiency in every system I build."
           />
 
-          {/* Metrics */}
+          {/* Metrics Row */}
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
+            viewport={{ once: true, margin: "-60px" }}
             variants={stagger}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-12"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-16"
           >
-            {DSA_METRICS.map((m, i) => (
-              <motion.div
-                key={m.id}
-                variants={popIn}
-                className="p-5 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-slate-600/40 hover:bg-slate-800/50 transition-all duration-300"
-              >
-                <p className="font-mono text-2xl sm:text-3xl font-bold text-white mb-1.5 tracking-tight">
-                  {m.value}
-                </p>
-                <p className="text-[12px] font-medium text-slate-200 mb-1">
-                  {m.label}
-                </p>
-                <p className="text-[10px] text-slate-500 leading-relaxed">
-                  {m.description}
-                </p>
+            {DSA_METRICS.map((m) => (
+              <motion.div key={m.id} variants={scaleIn}>
+                <GlassCard className="p-6 text-center">
+                  <p className="font-mono text-3xl sm:text-4xl font-light text-white/90 mb-2 tracking-tighter">
+                    {m.value}
+                  </p>
+                  <p className="text-[12px] font-medium text-white/55 mb-1">
+                    {m.label}
+                  </p>
+                  <p className="text-[10px] text-white/30 leading-relaxed">
+                    {m.description}
+                  </p>
+                </GlassCard>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Terminal */}
+          {/* Patterns Terminal */}
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
+            viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="rounded-xl border border-slate-700/30 overflow-hidden bg-[#131627]/60"
           >
-            {/* Chrome */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-slate-700/30 bg-slate-800/20">
-              <div className="flex gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-400/60" />
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400/60" />
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
+            <GlassCard className="overflow-hidden" hover={false}>
+              {/* Terminal chrome */}
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
+                <div className="flex gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/[0.1]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/[0.1]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/[0.1]" />
+                </div>
+                <span className="text-[10px] font-mono text-white/30">
+                  patterns.ts
+                </span>
+                <div className="w-12" />
               </div>
-              <span className="flex-1 text-center text-[10px] font-mono text-slate-500">
-                patterns.ts
-              </span>
-            </div>
 
-            <div className="p-4 sm:p-5">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={stagger}
-                className="grid sm:grid-cols-2 gap-1"
-              >
-                {DSA_PATTERNS.map((p) => (
-                  <motion.div
-                    key={p.id}
-                    variants={fadeUp}
-                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-800/30 transition-colors duration-200"
-                  >
-                    <Terminal className="w-3.5 h-3.5 text-indigo-400/40 mt-0.5 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                        <span className="text-[12px] font-medium text-slate-200">
-                          {p.name}
-                        </span>
-                        <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/[0.08] text-indigo-300/60 border border-indigo-500/10">
-                          {p.notation}
-                        </span>
-                      </div>
-                      <p className="text-[10px] text-slate-500 leading-relaxed">
-                        {p.description}
-                      </p>
-                    </div>
-                    <span
-                      className={`shrink-0 text-[9px] font-mono px-2 py-0.5 rounded-full border ${
-                        p.level === "Strong"
-                          ? "border-emerald-500/20 text-emerald-300/60 bg-emerald-500/[0.06]"
-                          : p.level === "Active"
-                          ? "border-sky-500/20 text-sky-300/60 bg-sky-500/[0.06]"
-                          : "border-amber-500/20 text-amber-300/60 bg-amber-500/[0.06]"
-                      }`}
+              <div className="p-5 sm:p-6">
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={stagger}
+                  className="grid sm:grid-cols-2 gap-1"
+                >
+                  {DSA_PATTERNS.map((p) => (
+                    <motion.div
+                      key={p.id}
+                      variants={fadeUp}
+                      className="group flex items-start gap-3.5 p-3.5 rounded-xl hover:bg-white/[0.03] transition-all duration-300"
                     >
-                      {p.level}
-                    </span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
+                      <div className="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/[0.08] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-white/[0.08] transition-colors duration-300">
+                        <Terminal className="w-3.5 h-3.5 text-white/35" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2.5 mb-1 flex-wrap">
+                          <span className="text-[12px] font-medium text-white/70 group-hover:text-white/90 transition-colors duration-300">
+                            {p.name}
+                          </span>
+                          <span className="font-mono text-[9px] px-2 py-0.5 rounded-md bg-white/[0.05] text-white/35 border border-white/[0.08]">
+                            {p.notation}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-white/35 leading-relaxed">
+                          {p.description}
+                        </p>
+                      </div>
+                      <span
+                        className={`shrink-0 text-[9px] font-mono px-2.5 py-1 rounded-full border ${
+                          p.level === "Strong"
+                            ? "border-white/[0.12] text-white/50 bg-white/[0.05]"
+                            : p.level === "Active"
+                            ? "border-white/[0.1] text-white/40 bg-white/[0.04]"
+                            : "border-white/[0.06] text-white/30 bg-white/[0.02]"
+                        }`}
+                      >
+                        {p.level}
+                      </span>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </GlassCard>
           </motion.div>
         </div>
       </section>
 
+      {/* Separator */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      </div>
+
       {/* ══════════════════════════════════════════════════════════════
           SKILLS
           ══════════════════════════════════════════════════════════════ */}
-      <section id="skills" className="py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-5">
-          <SectionLabel
+      <section id="skills" className="py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeader
+            number="02"
             tag="Stack"
             title="Technical Skills"
-            desc="Technologies I work with daily in production."
+            desc="Technologies I use daily to build production-grade systems."
           />
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
+            viewport={{ once: true, margin: "-60px" }}
             variants={stagger}
             className="grid md:grid-cols-3 gap-4"
           >
-            {SKILL_CATEGORIES.map((cat, catIdx) => {
-              const accents = [
-                { icon: "bg-indigo-500/10 text-indigo-400 border-indigo-500/15", top: "from-indigo-500/30" },
-                { icon: "bg-sky-500/10 text-sky-400 border-sky-500/15", top: "from-sky-500/30" },
-                { icon: "bg-violet-500/10 text-violet-400 border-violet-500/15", top: "from-violet-500/30" },
-              ];
-              const a = accents[catIdx % accents.length];
-              return (
-                <motion.div
-                  key={cat.title}
-                  variants={fadeUp}
-                  className="relative group p-5 sm:p-6 rounded-xl bg-slate-800/25 border border-slate-700/30 hover:border-slate-600/40 hover:bg-slate-800/40 transition-all duration-300 overflow-hidden"
-                >
-                  {/* Subtle top line */}
-                  <div className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r ${a.top} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+            {SKILL_CATEGORIES.map((cat) => (
+              <motion.div key={cat.title} variants={fadeUp}>
+                <GlassCard className="p-6 sm:p-7 h-full relative group overflow-hidden">
+                  {/* Hover gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`p-2 rounded-lg border ${a.icon}`}>
-                      {catIcon(cat.icon)}
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3.5 mb-5">
+                      <div className="p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white/45 group-hover:text-white/65 transition-colors duration-300">
+                        {catIcon(cat.icon)}
+                      </div>
+                      <div>
+                        <h3 className="text-[14px] font-medium text-white/80 group-hover:text-white transition-colors duration-300">
+                          {cat.title}
+                        </h3>
+                        <p className="text-[10px] text-white/30 font-mono mt-0.5">
+                          {cat.skills.length} technologies
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-[13px] font-semibold text-slate-100">
-                        {cat.title}
-                      </h3>
-                      <p className="text-[10px] text-slate-500 font-mono">
-                        {cat.skills.length} tools
-                      </p>
-                    </div>
-                  </div>
 
-                  <p className="text-[11px] text-slate-500 mb-4 leading-relaxed">
-                    {cat.description}
-                  </p>
+                    <p className="text-[11px] text-white/35 mb-5 leading-relaxed font-light">
+                      {cat.description}
+                    </p>
 
-                  <div className="flex flex-wrap gap-1.5">
-                    {cat.skills.map((s) => (
-                      <span
-                        key={s.name}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-700/20 border border-slate-700/30 text-[10px] font-mono text-slate-400 hover:text-slate-200 hover:border-slate-600/50 hover:bg-slate-700/30 transition-all duration-200"
-                      >
-                        {s.name}
-                        <span className="text-[8px] text-slate-600">
-                          {s.experience}
+                    <div className="flex flex-wrap gap-1.5">
+                      {cat.skills.map((s) => (
+                        <span
+                          key={s.name}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.07] text-[10px] font-mono text-white/45 hover:text-white/65 hover:border-white/[0.12] hover:bg-white/[0.07] transition-all duration-300 cursor-default"
+                        >
+                          {s.name}
+                          <span className="text-[8px] text-white/25">
+                            {s.experience}
+                          </span>
                         </span>
-                      </span>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </motion.div>
-              );
-            })}
+                </GlassCard>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
+      {/* Separator */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      </div>
+
       {/* ══════════════════════════════════════════════════════════════
           PROJECTS
           ══════════════════════════════════════════════════════════════ */}
-      <section id="projects" className="py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-5">
-          <SectionLabel
+      <section id="projects" className="py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeader
+            number="03"
             tag="Work"
             title="Selected Projects"
             desc="Systems I've designed, built, and shipped to production."
@@ -652,7 +756,7 @@ export default function Portfolio() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
+            viewport={{ once: true, margin: "-60px" }}
             variants={stagger}
             className="grid sm:grid-cols-2 gap-4"
           >
@@ -663,57 +767,69 @@ export default function Portfolio() {
                 target="_blank"
                 rel="noopener noreferrer"
                 variants={fadeUp}
-                className="group block p-5 sm:p-6 rounded-xl bg-slate-800/25 border border-slate-700/30 hover:border-slate-600/50 hover:bg-slate-800/40 transition-all duration-300"
+                className="group block"
               >
-                {/* Top */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-mono text-slate-500">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
-                    {proj.status}
-                  </span>
-                  <span className="text-[11px] font-mono text-slate-600">
+                <GlassCard className="p-6 sm:p-7 h-full relative overflow-hidden">
+                  {/* Number watermark */}
+                  <div className="absolute top-4 right-5 text-[60px] font-extralight text-white/[0.03] leading-none select-none pointer-events-none">
                     {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
+                  </div>
 
-                {/* Title */}
-                <h3 className="text-[15px] font-semibold text-slate-100 group-hover:text-white mb-1 transition-colors flex items-center gap-2">
-                  {proj.title}
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-600 group-hover:text-indigo-400 transition-colors" />
-                </h3>
-                <p className="text-[10px] text-indigo-400/40 font-mono mb-3">
-                  {proj.subtitle}
-                </p>
-                <p className="text-[11px] text-slate-400 leading-relaxed mb-5">
-                  {proj.description}
-                </p>
+                  <div className="relative z-10">
+                    {/* Status */}
+                    <div className="flex items-center justify-between mb-6">
+                      <span className="inline-flex items-center gap-2 text-[10px] font-mono text-white/35">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/60" />
+                        {proj.status}
+                      </span>
+                      <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-white/55 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-300" />
+                    </div>
 
-                {/* Divider */}
-                <div className="h-px bg-slate-700/30 mb-4" />
+                    {/* Title */}
+                    <h3 className="text-[17px] font-medium text-white/80 group-hover:text-white mb-1.5 transition-colors duration-300 leading-snug">
+                      {proj.title}
+                    </h3>
+                    <p className="text-[10px] text-white/25 font-mono mb-4">
+                      {proj.subtitle}
+                    </p>
+                    <p className="text-[12px] text-white/40 leading-[1.8] mb-6 font-light">
+                      {proj.description}
+                    </p>
 
-                {/* Tech */}
-                <div className="flex flex-wrap gap-1.5">
-                  {proj.techStack.map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 rounded text-[9px] font-mono bg-slate-700/20 border border-slate-700/30 text-slate-500 group-hover:text-slate-400 transition-colors"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
+                    {/* Divider */}
+                    <div className="h-px bg-white/[0.06] mb-5" />
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {proj.techStack.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2.5 py-1 rounded-md text-[9px] font-mono bg-white/[0.04] border border-white/[0.07] text-white/35 group-hover:text-white/50 transition-colors duration-300"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </GlassCard>
               </motion.a>
             ))}
           </motion.div>
         </div>
       </section>
 
+      {/* Separator */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      </div>
+
       {/* ══════════════════════════════════════════════════════════════
           CASE STUDIES
           ══════════════════════════════════════════════════════════════ */}
-      <section id="casestudies" className="py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-5">
-          <SectionLabel
+      <section id="casestudies" className="py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeader
+            number="04"
             tag="Deep Dive"
             title="Engineering Case Studies"
             desc="How algorithmic thinking shapes real production decisions."
@@ -722,59 +838,55 @@ export default function Portfolio() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
+            viewport={{ once: true, margin: "-60px" }}
             variants={stagger}
             className="grid lg:grid-cols-3 gap-4"
           >
-            {DSA_CASE_STUDIES.map((cs, i) => {
-              const stripes = ["bg-indigo-400", "bg-sky-400", "bg-violet-400"];
-              return (
-                <motion.div
-                  key={cs.id}
-                  variants={fadeUp}
-                  className="group flex flex-col p-5 sm:p-6 rounded-xl bg-slate-800/25 border border-slate-700/30 hover:border-slate-600/40 hover:bg-slate-800/40 transition-all duration-300 relative overflow-hidden"
-                >
-                  {/* Left accent bar */}
-                  <div
-                    className={`absolute left-0 top-5 bottom-5 w-[2px] rounded-full ${stripes[i % stripes.length]} opacity-20 group-hover:opacity-60 transition-opacity duration-300`}
-                  />
+            {DSA_CASE_STUDIES.map((cs) => (
+              <motion.div key={cs.id} variants={fadeUp}>
+                <GlassCard className="p-6 sm:p-7 h-full flex flex-col relative group overflow-hidden">
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                    <Database className="w-3 h-3 text-indigo-400/40" />
+                  {/* Project label */}
+                  <p className="text-[10px] font-mono text-white/30 uppercase tracking-wider mb-5 flex items-center gap-2">
+                    <Database className="w-3 h-3" />
                     {cs.project}
                   </p>
 
-                  <h3 className="text-[14px] font-semibold text-slate-200 mb-2.5 leading-snug group-hover:text-white transition-colors">
+                  {/* Title */}
+                  <h3 className="text-[15px] font-medium text-white/70 mb-3 leading-snug group-hover:text-white/90 transition-colors duration-300">
                     {cs.title}
                   </h3>
 
-                  <p className="text-[11px] text-slate-500 leading-relaxed mb-4 flex-1">
+                  {/* Summary */}
+                  <p className="text-[11px] text-white/35 leading-[1.8] mb-5 flex-1 font-light">
                     {cs.summary}
                   </p>
 
-                  {/* Complexity */}
-                  <div className="p-3.5 rounded-lg bg-slate-800/40 border border-slate-700/25 mb-4">
-                    <p className="text-[9px] font-mono text-slate-500 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <Target className="w-2.5 h-2.5 text-indigo-400/40" /> Complexity
+                  {/* Complexity box */}
+                  <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] mb-5">
+                    <p className="text-[9px] font-mono text-white/30 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <Target className="w-2.5 h-2.5" /> Complexity Analysis
                     </p>
-                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                    <p className="text-[11px] text-white/45 leading-relaxed font-light">
                       {cs.complexityFocus}
                     </p>
                   </div>
 
                   {/* Impact */}
-                  <p className="text-[10px] text-emerald-300/40 italic mb-4 flex items-start gap-1.5">
-                    <TrendingUp className="w-3 h-3 mt-0.5 shrink-0 text-emerald-400/30" />
+                  <p className="text-[10px] text-white/30 italic mb-5 flex items-start gap-2">
+                    <TrendingUp className="w-3 h-3 mt-0.5 shrink-0 text-white/25" />
                     {cs.impact}
                   </p>
 
-                  {/* Bottom */}
-                  <div className="flex items-center justify-between pt-3.5 border-t border-slate-700/25 mt-auto">
-                    <div className="flex flex-wrap gap-1">
+                  {/* Bottom bar */}
+                  <div className="flex items-center justify-between pt-4 border-t border-white/[0.06] mt-auto">
+                    <div className="flex flex-wrap gap-1.5">
                       {cs.stack.map((t) => (
                         <span
                           key={t}
-                          className="px-1.5 py-0.5 rounded text-[8px] font-mono bg-slate-700/20 border border-slate-700/25 text-slate-500"
+                          className="px-2 py-0.5 rounded text-[8px] font-mono bg-white/[0.04] border border-white/[0.06] text-white/30"
                         >
                           {t}
                         </span>
@@ -784,148 +896,149 @@ export default function Portfolio() {
                       href={cs.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 text-slate-600 hover:text-indigo-300 transition-colors"
+                      className="p-2 text-white/25 hover:text-white/55 transition-colors duration-300"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
-                </motion.div>
-              );
-            })}
+                </GlassCard>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
+      {/* Separator */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      </div>
+
       {/* ══════════════════════════════════════════════════════════════
-          JOURNEY
+          JOURNEY / TIMELINE
           ══════════════════════════════════════════════════════════════ */}
-      <section id="journey" className="py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-5">
-          <SectionLabel
+      <section id="journey" className="py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeader
+            number="05"
             tag="Timeline"
             title="My Journey"
             desc="From frontend foundations to full-stack distributed systems."
+            center
           />
 
           <div className="max-w-2xl mx-auto">
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
+              viewport={{ once: true, margin: "-60px" }}
               variants={stagger}
               className="relative"
             >
-              {/* Line */}
-              <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-indigo-500/30 via-slate-700/30 to-transparent" />
+              {/* Vertical line */}
+              <div className="absolute left-[21px] top-0 bottom-0 w-px bg-gradient-to-b from-white/[0.12] via-white/[0.06] to-transparent" />
 
-              <div className="space-y-6">
-                {EXPERIENCE_TIMELINE.map((item, i) => {
-                  const dotAccents = [
-                    "bg-indigo-500/15 border-indigo-500/25 text-indigo-400",
-                    "bg-sky-500/15 border-sky-500/25 text-sky-400",
-                    "bg-violet-500/15 border-violet-500/25 text-violet-400",
-                    "bg-emerald-500/15 border-emerald-500/25 text-emerald-400",
-                  ];
-                  const yearAccents = [
-                    "text-indigo-300/60 bg-indigo-500/[0.06] border-indigo-500/12",
-                    "text-sky-300/60 bg-sky-500/[0.06] border-sky-500/12",
-                    "text-violet-300/60 bg-violet-500/[0.06] border-violet-500/12",
-                    "text-emerald-300/60 bg-emerald-500/[0.06] border-emerald-500/12",
-                  ];
-                  return (
-                    <motion.div
-                      key={item.id}
-                      variants={fadeUp}
-                      className="relative pl-14"
-                    >
-                      {/* Dot */}
-                      <div className="absolute left-0 top-3 w-10 flex justify-center">
-                        <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center border ${dotAccents[i % dotAccents.length]}`}
-                        >
-                          {tlIcon(item.type)}
-                        </div>
+              <div className="space-y-5">
+                {EXPERIENCE_TIMELINE.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    variants={fadeUp}
+                    className="relative pl-16"
+                  >
+                    {/* Timeline dot */}
+                    <div className="absolute left-0 top-6 w-[42px] flex justify-center">
+                      <div className="w-[42px] h-[42px] rounded-xl bg-white/[0.04] border border-white/[0.1] flex items-center justify-center text-white/35 hover:text-white/55 hover:bg-white/[0.06] transition-all duration-300">
+                        {tlIcon(item.type)}
                       </div>
+                    </div>
 
-                      {/* Card */}
-                      <div className="p-5 rounded-xl bg-slate-800/25 border border-slate-700/30 hover:border-slate-600/40 hover:bg-slate-800/40 transition-all duration-300">
-                        <span
-                          className={`inline-block font-mono text-[10px] font-medium px-2.5 py-1 rounded-lg mb-3 border ${yearAccents[i % yearAccents.length]}`}
-                        >
-                          {item.year}
-                        </span>
+                    {/* Card */}
+                    <GlassCard className="p-6 sm:p-7">
+                      <span className="inline-block font-mono text-[10px] font-medium px-3 py-1 rounded-lg mb-4 bg-white/[0.04] border border-white/[0.08] text-white/40">
+                        {item.year}
+                      </span>
 
-                        <h3 className="text-[14px] font-semibold text-slate-100 mb-1.5">
-                          {item.title}
-                        </h3>
-                        <p className="text-[11px] text-slate-400 leading-relaxed mb-4">
-                          {item.summary}
-                        </p>
+                      <h3 className="text-[15px] font-medium text-white/80 mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-[12px] text-white/40 leading-[1.8] mb-5 font-light">
+                        {item.summary}
+                      </p>
 
-                        <ul className="space-y-2 mb-4">
-                          {item.highlights.map((h, hi) => (
-                            <li
-                              key={hi}
-                              className="flex items-start gap-2 text-[11px] text-slate-400"
-                            >
-                              <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400/30 mt-px shrink-0" />
-                              <span className="leading-relaxed">{h}</span>
-                            </li>
-                          ))}
-                        </ul>
+                      <ul className="space-y-2.5 mb-5">
+                        {item.highlights.map((h, hi) => (
+                          <li
+                            key={hi}
+                            className="flex items-start gap-2.5 text-[11px] text-white/45"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 text-white/25 mt-0.5 shrink-0" />
+                            <span className="leading-relaxed font-light">{h}</span>
+                          </li>
+                        ))}
+                      </ul>
 
-                        <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-700/25">
-                          {item.techStack.map((t) => (
-                            <span
-                              key={t}
-                              className="px-2 py-0.5 rounded text-[8px] font-mono bg-slate-700/20 border border-slate-700/25 text-slate-500"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/[0.06]">
+                        {item.techStack.map((t) => (
+                          <span
+                            key={t}
+                            className="px-2.5 py-0.5 rounded-md text-[8px] font-mono bg-white/[0.04] border border-white/[0.06] text-white/30"
+                          >
+                            {t}
+                          </span>
+                        ))}
                       </div>
-                    </motion.div>
-                  );
-                })}
+                    </GlassCard>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
+      {/* Separator */}
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+      </div>
+
       {/* ══════════════════════════════════════════════════════════════
           CONTACT
           ══════════════════════════════════════════════════════════════ */}
-      <section id="contact" className="py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-5">
+      <section id="contact" className="py-24 sm:py-32">
+        <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="max-w-lg mx-auto text-center"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={staggerSlow}
+            className="max-w-xl mx-auto text-center"
           >
             {/* Icon */}
-            <motion.div variants={fadeUp} className="mb-8">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/15 mb-6">
-                <Mail className="w-6 h-6 text-indigo-400" />
+            <motion.div variants={fadeUp} className="mb-10">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/[0.05] border border-white/[0.1] mb-7">
+                <Mail className="w-6 h-6 text-white/45" />
               </div>
-              <p className="text-[11px] font-mono text-indigo-400/60 uppercase tracking-widest mb-3">
-                Contact
-              </p>
-              <h2 className="text-[28px] sm:text-[34px] font-semibold text-white tracking-tight mb-3">
+
+              <div className="flex items-center justify-center gap-3 mb-5">
+                <span className="text-[11px] font-mono text-white/35">06</span>
+                <span className="w-8 h-px bg-white/15" />
+                <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/45">
+                  Contact
+                </span>
+              </div>
+
+              <h2 className="text-[32px] sm:text-[40px] font-light text-white tracking-[-0.03em] mb-4">
                 Let&apos;s work together
               </h2>
-              <p className="text-[13px] text-slate-400 leading-relaxed">
+              <p className="text-[14px] text-white/40 leading-relaxed max-w-md mx-auto font-light">
                 Open to collaboration, hiring, or technical conversations.
+                I&apos;d love to hear from you.
               </p>
             </motion.div>
 
-            {/* Social cards */}
+            {/* Social grid */}
             <motion.div
               variants={stagger}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-8"
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10"
             >
               {SOCIAL_LINKS.map((s) => (
                 <motion.a
@@ -933,44 +1046,46 @@ export default function Portfolio() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  variants={popIn}
-                  className="flex flex-col items-center gap-2.5 p-4 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-slate-600/50 hover:bg-slate-800/50 transition-all duration-200 group"
+                  variants={scaleIn}
                 >
-                  <span className="text-slate-500 group-hover:text-indigo-300 transition-colors">
-                    {socialIcon(s.icon)}
-                  </span>
-                  <span className="text-[11px] text-slate-400 group-hover:text-slate-200 transition-colors">
-                    {s.label}
-                  </span>
+                  <GlassCard className="flex flex-col items-center gap-3 p-5 group cursor-pointer">
+                    <span className="text-white/30 group-hover:text-white/55 transition-colors duration-300">
+                      {socialIcon(s.icon)}
+                    </span>
+                    <span className="text-[11px] text-white/35 group-hover:text-white/60 transition-colors duration-300 font-light">
+                      {s.label}
+                    </span>
+                  </GlassCard>
                 </motion.a>
               ))}
             </motion.div>
 
-            {/* Email */}
+            {/* Email copy */}
             <motion.div variants={fadeUp}>
               <button
                 onClick={copyMail}
-                className="group inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-slate-600/50 transition-all duration-200"
+                className="group inline-flex items-center gap-4 px-6 py-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.1] hover:bg-white/[0.07] hover:border-white/[0.15] transition-all duration-300"
               >
-                <Mail className="w-4 h-4 text-indigo-400/40" />
-                <span className="text-[13px] font-mono text-slate-400 group-hover:text-slate-200 transition-colors">
+                <Mail className="w-4 h-4 text-white/30" />
+                <span className="text-[13px] font-mono text-white/45 group-hover:text-white/70 transition-colors duration-300">
                   {PERSONAL.email}
                 </span>
+                <div className="w-px h-4 bg-white/[0.1]" />
                 {copied ? (
-                  <Check className="w-4 h-4 text-emerald-400" />
+                  <Check className="w-4 h-4 text-white/60" />
                 ) : (
-                  <Copy className="w-4 h-4 text-slate-600 group-hover:text-slate-400 transition-colors" />
+                  <Copy className="w-4 h-4 text-white/30 group-hover:text-white/55 transition-colors duration-300" />
                 )}
               </button>
               <AnimatePresence>
                 {copied && (
                   <motion.p
-                    initial={{ opacity: 0, y: 4 }}
+                    initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-[11px] text-emerald-400/70 font-mono mt-2"
+                    className="text-[11px] text-white/45 font-mono mt-3"
                   >
-                    ✓ Copied!
+                    ✓ Copied to clipboard
                   </motion.p>
                 )}
               </AnimatePresence>
@@ -982,27 +1097,33 @@ export default function Portfolio() {
       {/* ══════════════════════════════════════════════════════════════
           FOOTER
           ══════════════════════════════════════════════════════════════ */}
-      <footer className="py-8 border-t border-slate-800/40">
-        <div className="max-w-5xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="font-mono text-[12px] text-slate-500">
-            Mazaharul<span className="text-indigo-400/50"></span>
-          </span>
-          <span className="text-[11px] text-slate-600 flex items-center gap-1.5">
-            © {new Date().getFullYear()} {PERSONAL.name}
-            <Heart className="w-3 h-3 text-slate-700" />
-          </span>
-          <div className="flex gap-1">
-            {SOCIAL_LINKS.slice(0, 3).map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 text-slate-600 hover:text-indigo-300 transition-colors"
-              >
-                {socialIcon(s.icon)}
-              </a>
-            ))}
+      <footer className="py-10 border-t border-white/[0.05]">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span className="font-mono text-[12px] text-white/35 tracking-tight">
+              mazaharul.
+            </span>
+
+            <span className="text-[11px] text-white/25 flex items-center gap-2">
+              © {new Date().getFullYear()} {PERSONAL.name}
+              <span className="text-white/[0.1]">·</span>
+              Built with
+              <Heart className="w-3 h-3 text-white/25" />
+            </span>
+
+            <div className="flex gap-0.5">
+              {SOCIAL_LINKS.slice(0, 3).map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 text-white/25 hover:text-white/50 transition-colors duration-300"
+                >
+                  {socialIcon(s.icon)}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </footer>
@@ -1012,10 +1133,11 @@ export default function Portfolio() {
         {scrolled && (
           <motion.a
             href="#hero"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="fixed bottom-5 right-5 z-50 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/40 text-slate-400 hover:text-white hover:border-slate-600 backdrop-blur-sm transition-all duration-200"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white/35 hover:text-white/60 hover:bg-white/[0.08] hover:border-white/[0.15] backdrop-blur-sm transition-all duration-300"
           >
             <ChevronDown className="w-4 h-4 rotate-180" />
           </motion.a>
