@@ -1,0 +1,24 @@
+{
+  "name": "Mazaharul Islam | Full Stack Software Engineer",
+  "short_name": "MI Portfolio",
+  "description": "Full Stack Software Engineer Portfolio — React, Next.js, Node.js, TypeScript",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#050507",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/seo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/seo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg",
+      "purpose": "any maskable"
+    }
+  ]
+}
