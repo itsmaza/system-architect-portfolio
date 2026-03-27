@@ -326,10 +326,10 @@ export default function Portfolio() {
 
                         <span className="font-mono text-[13px] tracking-tight">
                             <span className="font-semibold text-white/85 group-hover:text-white transition-colors duration-300">
-                                Mazaharul
+                                Maza
                             </span>
-                            <span className="font-light text-white/30 group-hover:text-white/50 transition-colors duration-300">
-                                .dev
+                            <span className="font-light text-white/40 group-hover:text-white/50 transition-colors duration-300">
+                                Soft
                             </span>
                         </span>
                     </a>
@@ -1046,17 +1046,17 @@ export default function Portfolio() {
 
                             <span className="font-mono text-[13px] tracking-tight">
                                 <span className="font-semibold text-white/85 group-hover:text-white transition-colors duration-300">
-                                    Mazaharul
+                                    Maza
                                 </span>
-                                <span className="font-light text-white/30 group-hover:text-white/50 transition-colors duration-300">
-                                    .dev
+                                <span className="font-light text-white/40 group-hover:text-white/50 transition-colors duration-300">
+                                    Soft
                                 </span>
                             </span>
                         </a>
-                        <span className="text-[11px] text-white/25 flex items-center gap-2">
+                        <span className="text-[11px] text-white/35 flex items-center gap-2 text-light">
                             © {new Date().getFullYear()} {PERSONAL.name}
-                            <span className="text-white/[0.1]">·</span>
-                            Built with
+                            <span className="text-white/50">·</span>
+                            Turning Ideas into Reality
                             <Heart className="w-3 h-3 text-white/25" />
                         </span>
                         <div className="flex gap-0.5">
