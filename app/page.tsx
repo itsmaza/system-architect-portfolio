@@ -323,7 +323,6 @@ export default function Portfolio() {
                     >
                         {/* Decorative line */}
                         <span className="w-4 h-px bg-gradient-to-r from-white/40 to-transparent group-hover:w-6 group-hover:from-white/70 transition-all duration-500" />
-
                         <span className="font-mono text-[13px] tracking-tight">
                             <span className="font-semibold text-white/85 group-hover:text-white transition-colors duration-300">
                                 Maza
@@ -333,7 +332,6 @@ export default function Portfolio() {
                             </span>
                         </span>
                     </a>
-
                     <div className="hidden md:flex items-center gap-1">
                         {NAV.map((n) => (
                             <a
@@ -529,7 +527,7 @@ export default function Portfolio() {
                                 <div className="absolute -inset-8 rounded-[32px] bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                                 <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden border border-white/[0.1] bg-white/[0.03] group-hover:border-white/[0.16] transition-all duration-500">
                                     <img
-                                        src="/IMG_6403.PNG"
+                                        src="/Mazaharul Islam Full Stack Software Engineer.PNG"
                                         alt={PERSONAL.name}
                                         className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                                     />
