@@ -2,6 +2,7 @@
 
 import { useState, useEffect, JSX, useRef } from 'react';
 import { motion, AnimatePresence, cubicBezier, useScroll, useTransform } from 'framer-motion';
+
 import {
     Mail,
     Github,
@@ -51,6 +52,10 @@ import {
     EXPERIENCE_TIMELINE,
 } from '@/lib/data';
 
+// import CursorEffect from './components/CursorEffect';
+// import LeetCodeStats from './components/LeetCodeStats';
+
+import CommandPalette from './components/CommandPalette';
 /* ═══════════════ ANIMATIONS ═══════════════ */
 
 const ease = cubicBezier(0.16, 1, 0.3, 1);
@@ -302,6 +307,8 @@ export default function Portfolio() {
         <div className="relative min-h-screen bg-[#09090b] text-white/70 antialiased scroll-smooth selection:bg-white/15 selection:text-white">
             {/* ★ Overlays — negative z-index, content এর পেছনে ★ */}
             <AmbientBg />
+            {/* <CursorEffect /> */}
+            <CommandPalette />
             <NoiseOverlay />
 
             {/* Progress bar */}
@@ -545,8 +552,6 @@ export default function Portfolio() {
                             </div>
                         </motion.div>
                     </div>
-
-                 
                 </motion.div>
             </section>
 
@@ -649,6 +654,8 @@ export default function Portfolio() {
                                 </motion.div>
                             </div>
                         </GlassCard>
+                        <br />
+                        {/* <LeetCodeStats /> */}
                     </motion.div>
                 </div>
             </section>
