@@ -1,179 +1,103 @@
-import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
+# Mazaharul Islam — Portfolio
 
-const inter = Inter({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-});
+Personal portfolio of **Mazaharul Islam**, a Full Stack Software Engineer with 4+ years of experience building scalable distributed systems.
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-});
+🌐 **Live:** [mazaharul.site](https://mazaharul.site)
 
-const SITE_URL = "https://mazaharul.site";
-const SITE_NAME = "Mazaharul Islam";
-const SITE_TITLE = "Mazaharul Islam | Full Stack Software Engineer";
-const SITE_DESCRIPTION =
-  "Full Stack Software Engineer specializing in scalable distributed systems, high-performance architectures, React, Next.js, Node.js, and cloud-native solutions.";
-const OG_IMAGE = `${SITE_URL}/seo.jpg`;
+---
 
-export const metadata: Metadata = {
-  title: { default: SITE_TITLE, template: `%s | ${SITE_NAME}` },
-  description: SITE_DESCRIPTION,
-  applicationName: SITE_NAME,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
-  creator: SITE_NAME,
-  publisher: SITE_NAME,
-  generator: "Next.js",
-  keywords: [
-    "Mazaharul Islam", "Full Stack Developer", "Software Engineer",
-    "React Developer", "Next.js Developer", "Node.js Developer",
-    "TypeScript Developer", "System Architecture", "Distributed Systems",
-    "Cloud Native", "REST API", "GraphQL", "MongoDB", "PostgreSQL",
-    "Tailwind CSS", "Portfolio", "Bangladesh Developer",
-  ],
-  metadataBase: new URL(SITE_URL),
-  alternates: { canonical: "/", languages: { "en-US": "/" } },
-  openGraph: {
-    type: "website", locale: "en_US", url: SITE_URL,
-    siteName: SITE_NAME, title: SITE_TITLE, description: SITE_DESCRIPTION,
-    images: [{ url: OG_IMAGE, width: 1200, height: 630,
-      alt: `${SITE_NAME} — Full Stack Software Engineer Portfolio`, type: "image/jpeg" }],
-  },
-  twitter: {
-    card: "summary_large_image", title: SITE_TITLE,
-    description: SITE_DESCRIPTION, images: [OG_IMAGE],
-    creator: "@mazaharul_islam", site: "@mazaharul_islam",
-  },
-  robots: {
-    index: true, follow: true, nocache: false,
-    googleBot: { index: true, follow: true, "max-video-preview": -1,
-      "max-image-preview": "large", "max-snippet": -1 },
-  },
-  verification: { google: "YOUR_GOOGLE_VERIFICATION_CODE" },
-  icons: {
-    icon: [
-      { url: "/binary.png", sizes: "any" },
-      { url: "/binary.png", sizes: "16x16", type: "image/png" },
-      { url: "/binary.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: [{ url: "/binary.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/binary.png",
-  },
-  manifest: "/site.webmanifest",
-  category: "technology",
-};
+## Tech Stack
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#050507" },
-    { media: "(prefers-color-scheme: light)", color: "#050507" },
-  ],
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  colorScheme: "dark",
-};
+| Layer | Technologies |
+|---|---|
+| **Frontend** | Next.js 14, React, TypeScript, Tailwind CSS, Framer Motion |
+| **Backend** | Node.js, Express, REST APIs, JWT Auth |
+| **Database** | PostgreSQL, MongoDB, Prisma ORM |
+| **DevOps** | Docker, Linux CLI, Git/GitHub, Basic CI/CD |
 
-function JsonLd() {
-  const personSchema = {
-    "@context": "https://schema.org", "@type": "Person",
-    name: "Mazaharul Islam", url: SITE_URL,
-    image: `${SITE_URL}/IMG_6403.PNG`,
-    jobTitle: "Full Stack Software Engineer",
-    description: SITE_DESCRIPTION,
-    email: "mailto:mazaharul.contact@gmail.com",
-    sameAs: ["https://github.com/mazaharul", "https://linkedin.com/in/mazaharul"],
-    knowsAbout: ["Software Engineering", "Full Stack Development", "React",
-      "Next.js", "Node.js", "TypeScript", "System Design"],
-    address: { "@type": "PostalAddress", addressCountry: "BD", addressLocality: "Bangladesh" },
-  };
-  const websiteSchema = {
-    "@context": "https://schema.org", "@type": "WebSite",
-    name: SITE_NAME, url: SITE_URL, description: SITE_DESCRIPTION,
-    author: { "@type": "Person", name: SITE_NAME }, inLanguage: "en-US",
-  };
-  const profilePageSchema = {
-    "@context": "https://schema.org", "@type": "ProfilePage",
-    mainEntity: { "@type": "Person", name: "Mazaharul Islam",
-      url: SITE_URL, jobTitle: "Full Stack Software Engineer" },
-    dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString().split("T")[0],
-  };
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }} />
-    </>
-  );
-}
+---
 
-/* ═══════════════════════════════════════════════════════════════
-   ROOT LAYOUT — ★ isolate + z-index ঠিক করা হয়েছে ★
-   ═══════════════════════════════════════════════════════════════ */
+## Features
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html
-      lang="en"
-      className={`dark scroll-smooth ${inter.variable} ${jetbrainsMono.variable}`}
-      suppressHydrationWarning
-    >
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <JsonLd />
-      </head>
+- **Animated Hero** — Typewriter effect, parallax scroll, smooth fade-in transitions
+- **Command Palette** — `Cmd/Ctrl + K` for keyboard-driven navigation
+- **DSA Metrics** — Showcases algorithmic thinking with real complexity analysis
+- **Case Studies** — Deep-dive engineering breakdowns of production projects
+- **Timeline** — Interactive career journey from 2021 to present
+- **Contact** — One-click email copy, social links, fully accessible
 
-      {/* ★ isolate যোগ — নিজস্ব stacking context তৈরি করবে ★ */}
-      <body className="antialiased isolate">
-        {/* Skip to content */}
-        <a
-          href="#hero"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-emerald-500 focus:text-black focus:text-sm focus:font-bold"
-        >
-          Skip to main content
-        </a>
+---
 
-        {/* ★ Background — z-0 তে, content এর পেছনে ★ */}
-        <div
-          className="fixed inset-0 z-0 h-full w-full pointer-events-none"
-          aria-hidden="true"
-        >
-          <div
-            className="absolute inset-0 opacity-[0.02]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, rgba(52,211,153,0.5) 1px, transparent 1px)",
-              backgroundSize: "24px 24px",
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              maskImage:
-                "radial-gradient(ellipse 60% 60% at 50% 50%, black 50%, transparent 100%)",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 60% 60% at 50% 50%, black 50%, transparent 100%)",
-              background:
-                "radial-gradient(ellipse at 50% 0%, rgba(52,211,153,0.03) 0%, transparent 60%)",
-            }}
-          />
-        </div>
+## Projects Showcased
 
-        {/* ★ Main content — z-[1] দিয়ে background এর উপরে ★ */}
-        <main className="relative z-[1] min-h-screen">{children}</main>
-      </body>
-    </html>
-  );
-}
+| Project | Description | Stack |
+|---|---|---|
+| [flybismillah](https://flybismillah.com) | Flight aggregation engine with GDS/Duffel API integration | Next.js, PostgreSQL, Prisma, Docker |
+| [VoterFinder](https://voterserial.vercel.app) | Fast voter serial lookup with indexed querying | Next.js, MongoDB |
+| [mazaPay](https://pay.mazaharul.site) | ACID-compliant FinTech transaction system | Node.js, Express, PostgreSQL, JWT |
+| [FlexIn](https://themaza.shop) | Scalable e-commerce with optimized relational schemas | Next.js, PostgreSQL, Zustand, Prisma |
+
+---
+
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/devmazaharul/portfolio.git
+cd portfolio
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Project Structure
+
+```
+├── app/
+│   ├── page.tsx              # Main portfolio component
+│   ├── layout.tsx            # Root layout with SEO metadata & JSON-LD
+│   └── globals.css           # Global styles & Tailwind config
+├── components/
+│   └── CommandPalette.tsx    # Cmd+K command palette
+├── lib/
+│   ├── data.ts               # All portfolio content (single source of truth)
+│   └── types.ts              # TypeScript type definitions
+└── public/
+    ├── resume.pdf
+    └── seo.jpg
+```
+
+---
+
+## Environment
+
+No environment variables required for local development. All data is static and lives in `lib/data.ts`.
+
+---
+
+## SEO
+
+- Full Open Graph & Twitter Card metadata
+- JSON-LD structured data (Person, WebSite, ProfilePage schemas)
+- Canonical URLs and `robots` directives configured in `app/layout.tsx`
+
+---
+
+## Contact
+
+**Mazaharul Islam**
+📧 [devmazaharul@gmail.com](mailto:devmazaharul@gmail.com)
+💼 [LinkedIn](https://www.linkedin.com/in/mazaharul-islam-0948a333a)
+🐙 [GitHub](https://github.com/devmazaharul)
+💬 [WhatsApp](https://wa.me/8801886575932)
+
+---
+
+© 2026 Mazaharul Islam. All rights reserved.
