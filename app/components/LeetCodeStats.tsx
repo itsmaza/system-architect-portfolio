@@ -14,8 +14,8 @@ const DIFF: Record<Difficulty, { stroke: string; text: string; bar: string }> = 
     Hard:   { stroke: '#f43f5e', text: 'text-rose-400',    bar: 'bg-rose-500'    },
 };
 
-function DonutChart({ easy, medium, hard, total, isLight }: {
-    easy: number; medium: number; hard: number; total: number; isLight: boolean;
+function DonutChart({ easy, medium, hard, total }: {
+    easy: number; medium: number; hard: number; total: number;
 }) {
     const r    = 48;
     const circ = 2 * Math.PI * r;
@@ -38,7 +38,7 @@ function DonutChart({ easy, medium, hard, total, isLight }: {
         <div className="relative w-[108px] h-[108px] shrink-0">
             <svg width="108" height="108" viewBox="0 0 108 108" className="-rotate-90">
                 <circle cx="54" cy="54" r={r} fill="none"
-                    stroke={isLight ? '#e4e4e7' : '#1f1f23'} strokeWidth="9" />
+                    stroke="#1f1f23" strokeWidth="9" />
                 {arcs.map((a, i) =>
                     a.len > 0 ? (
                         <motion.circle key={i} cx="54" cy="54" r={r}
@@ -53,15 +53,15 @@ function DonutChart({ easy, medium, hard, total, isLight }: {
                 )}
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
-                <span className={`text-xl font-semibold tabular-nums leading-none ${isLight ? 'text-zinc-800' : 'text-white'}`}>{total}</span>
-                <span className={`text-[10px] ${isLight ? 'text-zinc-400' : 'text-zinc-600'}`}>solved</span>
+                <span className="text-xl font-semibold tabular-nums leading-none text-white">{total}</span>
+                <span className="text-[10px] text-zinc-600">solved</span>
             </div>
         </div>
     );
 }
 
-function DiffRow({ label, val, pct, delay, isLight }: {
-    label: Difficulty; val: number; pct: number; delay: number; isLight: boolean;
+function DiffRow({ label, val, pct, delay }: {
+    label: Difficulty; val: number; pct: number; delay: number;
 }) {
     const cfg = DIFF[label];
     return (
@@ -69,7 +69,7 @@ function DiffRow({ label, val, pct, delay, isLight }: {
             initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }}
             transition={{ delay, duration: 0.25 }}>
             <span className={`text-[11px] font-medium w-12 shrink-0 ${cfg.text}`}>{label}</span>
-            <div className={`flex-1 h-1 rounded-full overflow-hidden ${isLight ? 'bg-zinc-200' : 'bg-zinc-800'}`}>
+            <div className="flex-1 h-1 rounded-full overflow-hidden bg-zinc-800">
                 <motion.div
                     className={`h-full rounded-full ${cfg.bar}`}
                     initial={{ width: 0 }}
@@ -77,12 +77,12 @@ function DiffRow({ label, val, pct, delay, isLight }: {
                     transition={{ duration: 0.9, delay: delay + 0.1, ease: 'easeOut' }}
                 />
             </div>
-            <span className={`text-xs font-semibold tabular-nums w-7 text-right shrink-0 ${isLight ? 'text-zinc-700' : 'text-zinc-300'}`}>{val}</span>
+            <span className="text-xs font-semibold tabular-nums w-7 text-right shrink-0 text-zinc-300">{val}</span>
         </motion.div>
     );
 }
 
-export default function LeetCodeStats({ isLight = false }: { isLight?: boolean }) {
+export default function LeetCodeStats() {
     const [stats, setStats]     = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -110,18 +110,18 @@ export default function LeetCodeStats({ isLight = false }: { isLight?: boolean }
     const maxVal = Math.max(easy, medium, hard, 1);
 
     /* ── theme tokens ── */
-    const cardBg    = isLight ? 'bg-white border-zinc-200/80'         : 'bg-[#111113] border-zinc-800/80';
-    const headerBd  = isLight ? 'border-zinc-100'                     : 'border-zinc-800/60';
-    const avatarBg  = isLight ? 'bg-zinc-100 text-zinc-600'           : 'bg-zinc-800 text-zinc-300';
-    const nameTx    = isLight ? 'text-zinc-800'                       : 'text-zinc-200';
-    const slashTx   = isLight ? 'text-zinc-300'                       : 'text-zinc-700';
-    const subTx     = isLight ? 'text-zinc-400'                       : 'text-zinc-600';
-    const liveColor = isLight ? 'text-zinc-400'                       : 'text-zinc-600';
-    const extColor  = isLight ? 'text-zinc-300 hover:text-zinc-500'   : 'text-zinc-700 hover:text-zinc-400';
-    const metaBd    = isLight ? 'border-zinc-100'                     : 'border-zinc-800/60';
-    const rankTx    = isLight ? 'text-zinc-700'                       : 'text-zinc-200';
-    const skelBg    = isLight ? 'bg-zinc-100'                         : 'bg-zinc-800/40';
-    const skelBar   = isLight ? 'bg-zinc-100'                         : 'bg-zinc-800';
+    const cardBg    = 'border-[#111113] bg-zinc-900';
+    const headerBd  = 'border-zinc-800/60';
+    const avatarBg  = 'bg-zinc-800 text-zinc-300';
+    const nameTx    = 'text-zinc-200';
+    const slashTx   = 'text-zinc-700';
+    const subTx     = 'text-zinc-600';
+    const liveColor = 'text-zinc-600';
+    const extColor  = 'text-zinc-700 hover:text-zinc-400';
+    const metaBd    = 'border-zinc-800/60';
+    const rankTx    = 'text-zinc-200';
+    const skelBg    = 'bg-zinc-800/40';
+    const skelBar   = 'bg-zinc-800';
 
     return (
         <motion.div
@@ -158,7 +158,7 @@ export default function LeetCodeStats({ isLight = false }: { isLight?: boolean }
                         {/* Donut */}
                         {loading
                             ? <div className={`w-[108px] h-[108px] rounded-full animate-pulse shrink-0 ${skelBg}`} />
-                            : <DonutChart easy={easy} medium={medium} hard={hard} total={total} isLight={isLight} />
+                            : <DonutChart easy={easy} medium={medium} hard={hard} total={total} />
                         }
 
                         {/* Right */}
@@ -179,7 +179,7 @@ export default function LeetCodeStats({ isLight = false }: { isLight?: boolean }
                                         return (
                                             <DiffRow key={d} label={d} val={val}
                                                 pct={Math.round((val / maxVal) * 100)}
-                                                delay={0.1 * i} isLight={isLight} />
+                                                delay={0.1 * i} />
                                         );
                                     })
                                 }
@@ -197,7 +197,7 @@ export default function LeetCodeStats({ isLight = false }: { isLight?: boolean }
                                     }
                                     <span className={`text-[10px] ${subTx}`}>rank</span>
                                 </div>
-                                <div className={`w-px h-3.5 ${isLight ? 'bg-zinc-200' : 'bg-zinc-800'}`} />
+                                <div className="w-px h-3.5 bg-zinc-800" />
                                 <div className="flex items-center gap-1.5">
                                     <TrendingUp size={11} className="text-emerald-500" />
                                     {loading

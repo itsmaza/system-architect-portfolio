@@ -36,8 +36,6 @@ import {
     Layers,
     Star,
     Clock,
-    Sun,
-    Moon,
 } from 'lucide-react';
 
 import {
@@ -149,86 +147,44 @@ const EXTRA_DSA_CASES = [
 ];
 
 /* ═══════════════ THEME TOKENS ═══════════════ */
-const dark = {
-    root: 'bg-[#0D0D0D] text-zinc-300',
-    nav: 'bg-[#0D0D0D]/90',
-    mobileMenu: 'bg-[#0D0D0D]/98 border-zinc-800/60',
-    card: 'bg-[#141414] border-zinc-800/50',
-    cardHover: 'hover:bg-[#181818] hover:border-zinc-700/50',
-    heading: 'text-[#F0F0F0]',
+// DARK: Softened — no more pitch-black. Warm-tinted slate dark.
+const th = {
+    root: 'bg-[#111318] text-zinc-300',
+    nav: 'bg-[#111318]/92',
+    mobileMenu: 'bg-[#111318]/98 border-zinc-700/40',
+    card: 'bg-[#191C24] border-zinc-700/30',
+    cardHover: 'hover:bg-[#1E2230] hover:border-zinc-600/40',
+    heading: 'text-[#ECF0F8]',
     sub: 'text-zinc-400',
-    muted: 'text-[#555555]',
-    divider: 'via-zinc-800/70',
-    codeBg: 'bg-[#111111] border-zinc-800/40',
+    muted: 'text-zinc-500',
+    divider: 'via-zinc-700/50',
+    codeBg: 'bg-[#15181F] border-zinc-700/30',
     skillBadge:
-        'bg-[#181818] border-zinc-800/50 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/25 hover:bg-emerald-500/[0.05]',
-    tag: 'bg-[#181818] border-zinc-800/50 text-[#555555]',
-    tagHover: 'group-hover:text-emerald-400/60 group-hover:border-emerald-500/15',
-    yearBadge: 'bg-emerald-500/[0.06] border-emerald-500/20 text-emerald-400/80',
-    tlLine: 'from-emerald-500/20 via-zinc-800/30',
-    tlIcon: 'bg-[#141414] border-zinc-800/50 text-[#555555] hover:text-emerald-400 hover:border-emerald-500/25 hover:bg-emerald-500/[0.05]',
-    footerBorder: 'border-zinc-800/50',
-    copyBtn: 'bg-[#141414] border-zinc-800/50 hover:bg-[#181818] hover:border-emerald-500/20',
+        'bg-[#1E2230] border-zinc-700/40 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/[0.07]',
+    tag: 'bg-[#1E2230] border-zinc-700/40 text-zinc-500',
+    tagHover: 'group-hover:text-emerald-400/60 group-hover:border-emerald-500/20',
+    yearBadge: 'bg-emerald-500/[0.08] border-emerald-500/25 text-emerald-400/90',
+    tlLine: 'from-emerald-500/25 via-zinc-700/25',
+    tlIcon: 'bg-[#191C24] border-zinc-700/40 text-zinc-500 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/[0.07]',
+    footerBorder: 'border-zinc-700/40',
+    copyBtn: 'bg-[#191C24] border-zinc-700/40 hover:bg-[#1E2230] hover:border-emerald-500/25',
     copyText: 'text-zinc-400 group-hover:text-emerald-400',
-    divLine: 'w-px h-4 bg-zinc-800',
-    toggleBtn:
-        'border-zinc-800/60 text-[#555555] hover:text-zinc-300 hover:border-zinc-700 hover:bg-[#181818]',
+    divLine: 'w-px h-4 bg-zinc-700',
     ctaSecondary:
-        'bg-[#181818] text-zinc-300 border-zinc-800/60 hover:bg-[#222222] hover:text-[#F0F0F0] hover:border-zinc-700',
-    socialLink: 'text-[#555555] hover:text-emerald-400 hover:bg-emerald-500/[0.06]',
-    navLink: 'text-zinc-500 hover:text-zinc-300 hover:bg-[#181818]',
-    navActive: 'text-emerald-400 bg-emerald-500/[0.07]',
-    patternRow: 'hover:bg-[#181818]',
-    ambientGrid: 'rgba(16,185,129,0.18)',
-    notationBg: 'bg-[#111111] border-zinc-800/50',
-    imgBorder: 'border-zinc-800/50 bg-[#141414] shadow-black/60',
-    imgOverlay: 'from-[#0D0D0D]/60',
-    badgeBg: 'bg-[#0D0D0D] border-zinc-800/60 shadow-black/70',
-    cornerDot: 'bg-[#0D0D0D] border-zinc-800/50',
-    backTop: 'bg-[#141414]/90 border-zinc-800/50 text-[#555555]',
-    numOverlay: 'text-zinc-800/60',
-    borderLine: 'bg-zinc-800/60',
-};
-
-const light = {
-    root: 'bg-[#fff] text-zinc-600',
-    nav: 'bg-[#fff]/90',
-    mobileMenu: 'bg-white/98 border-zinc-200/70',
-    card: 'bg-white border-zinc-200/70',
-    cardHover: 'hover:bg-zinc-50 hover:border-zinc-300/80',
-    heading: 'text-[#111111]',
-    sub: 'text-zinc-500',
-    muted: 'text-zinc-400',
-    divider: 'via-zinc-300/60',
-    codeBg: 'bg-zinc-100 border-zinc-200/70',
-    skillBadge:
-        'bg-zinc-100 border-zinc-200/70 text-zinc-600 hover:text-emerald-700 hover:border-emerald-400/40 hover:bg-emerald-50',
-    tag: 'bg-zinc-100 border-zinc-200/70 text-zinc-400',
-    tagHover: 'group-hover:text-emerald-600 group-hover:border-emerald-400/30',
-    yearBadge: 'bg-emerald-50 border-emerald-200/60 text-emerald-700',
-    tlLine: 'from-emerald-400/25 via-zinc-200/50',
-    tlIcon: 'bg-white border-zinc-200/70 text-zinc-400 hover:text-emerald-600 hover:border-emerald-300/50 hover:bg-emerald-50',
-    footerBorder: 'border-zinc-200/60',
-    copyBtn: 'bg-white border-zinc-200/70 hover:bg-zinc-50 hover:border-emerald-400/30',
-    copyText: 'text-zinc-500 group-hover:text-emerald-600',
-    divLine: 'w-px h-4 bg-zinc-200',
-    toggleBtn:
-        'border-zinc-200/80 text-zinc-400 hover:text-zinc-700 hover:border-zinc-300 hover:bg-zinc-100',
-    ctaSecondary:
-        'bg-emerald-500 text-zinc-200 border-zinc-200/80 hover:bg-zinc-50 hover:text-[#111111] hover:border-zinc-300',
-    socialLink: 'text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50',
-    navLink: 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100',
-    navActive: 'text-gray-100 bg-gray-600',
-    patternRow: 'hover:bg-zinc-100/70',
-    ambientGrid: 'rgba(16,185,129,0.10)',
-    notationBg: 'bg-zinc-100 border-zinc-200/60',
-    imgBorder: 'border-zinc-200/70 bg-zinc-100/60 shadow-zinc-200/50',
-    imgOverlay: 'from-white/30',
-    badgeBg: 'bg-white border-zinc-200/70 shadow-zinc-200/60',
-    cornerDot: 'bg-white border-zinc-200/70',
-    backTop: 'bg-white/90 border-zinc-200/60 text-zinc-400',
-    numOverlay: 'text-zinc-200/80',
-    borderLine: 'bg-zinc-200/70',
+        'bg-[#1E2230] text-zinc-300 border-zinc-700/50 hover:bg-[#252A38] hover:text-[#ECF0F8] hover:border-zinc-600',
+    socialLink: 'text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/[0.07]',
+    navLink: 'text-zinc-500 hover:text-zinc-300 hover:bg-[#1E2230]',
+    navActive: 'text-emerald-400 bg-emerald-500/[0.09]',
+    patternRow: 'hover:bg-[#1E2230]',
+    ambientGrid: 'rgba(16,185,129,0.15)',
+    notationBg: 'bg-[#15181F] border-zinc-700/40',
+    imgBorder: 'border-zinc-700/40 bg-[#191C24] shadow-black/50',
+    imgOverlay: 'from-[#111318]/60',
+    badgeBg: 'bg-[#111318] border-zinc-700/50 shadow-black/60',
+    cornerDot: 'bg-[#111318] border-zinc-700/50',
+    backTop: 'bg-[#191C24]/90 border-zinc-700/40 text-zinc-500',
+    numOverlay: 'text-zinc-700/50',
+    borderLine: 'bg-zinc-700/40',
 };
 
 /* ═══════════════ TYPES ═══════════════ */
@@ -242,22 +198,16 @@ type CaseStudy = {
     stack: readonly string[];
     liveUrl?: string;
 };
-type TH = typeof dark;
 
 /* ═══════════════ COMPONENTS ═══════════════ */
-function AmbientBg({ th }: { th: TH }) {
-    const isLight = th === light;
+function AmbientBg() {
     return (
         <div className="pointer-events-none fixed inset-0 z-[-2] overflow-hidden">
             <div
-                className={`absolute -top-[300px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] ${
-                    isLight
-                        ? 'bg-[radial-gradient(ellipse,rgba(16,185,129,0.05),transparent_70%)]'
-                        : 'bg-[radial-gradient(ellipse,rgba(16,185,129,0.04),transparent_70%)]'
-                }`}
+                className="absolute -top-[300px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(ellipse,rgba(16,185,129,0.05),transparent_70%)]"
             />
             <div
-                className={`absolute inset-0 ${isLight ? 'opacity-[0.035]' : 'opacity-[0.018]'}`}
+                className="absolute inset-0 opacity-[0.022]"
                 style={{
                     backgroundImage: `linear-gradient(${th.ambientGrid} 1px,transparent 1px),linear-gradient(90deg,${th.ambientGrid} 1px,transparent 1px)`,
                     backgroundSize: '72px 72px',
@@ -271,12 +221,10 @@ function GlassCard({
     children,
     className = '',
     hover = true,
-    th,
 }: {
     children: React.ReactNode;
     className?: string;
     hover?: boolean;
-    th: TH;
 }) {
     return (
         <div
@@ -288,7 +236,7 @@ function GlassCard({
     );
 }
 
-function Divider({ th }: { th: TH }) {
+function Divider() {
     return (
         <div className="relative z-[2] max-w-6xl mx-auto px-6">
             <div
@@ -304,14 +252,12 @@ function SectionHeader({
     title,
     desc,
     center = false,
-    th,
 }: {
     number: string;
     tag: string;
     title: string;
     desc: string;
     center?: boolean;
-    th: TH;
 }) {
     return (
         <motion.div
@@ -378,14 +324,12 @@ function Typer({ texts }: { texts: string[] }) {
     );
 }
 
-function CaseCard({ cs, th }: { cs: CaseStudy; th: TH }) {
-    const isLight = th === light;
+function CaseCard({ cs }: { cs: CaseStudy }) {
     return (
         <GlassCard
-            th={th}
             className="p-6 sm:p-7 h-full flex flex-col relative group overflow-hidden"
         >
-            <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-emerald-500/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <p className="text-[10px] font-mono text-emerald-400/55 uppercase tracking-wider mb-5 flex items-center gap-2">
                 <Database className="w-3 h-3" />
                 {cs.project}
@@ -411,7 +355,7 @@ function CaseCard({ cs, th }: { cs: CaseStudy; th: TH }) {
                 {cs.impact}
             </p>
             <div
-                className={`flex items-center justify-between pt-4 border-t mt-auto ${isLight ? 'border-zinc-200/60' : 'border-zinc-800/50'}`}
+                className="flex items-center justify-between pt-4 border-t mt-auto border-zinc-700/30"
             >
                 <div className="flex flex-wrap gap-1.5">
                     {cs.stack.map((t) => (
@@ -445,10 +389,8 @@ export default function Portfolio() {
     const [active, setActive] = useState('');
     const [copied, setCopied] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [isLight, setIsLight] = useState(false);
-    const heroRef = useRef<HTMLDivElement>(null);
 
-    const th = isLight ? light : dark;
+    const heroRef = useRef<HTMLDivElement>(null);
 
     const { scrollYProgress } = useScroll({
         target: heroRef,
@@ -475,27 +417,41 @@ export default function Portfolio() {
         return () => io.disconnect();
     }, []);
 
+    // ── Copy email with proper reset ──
     const copyMail = async () => {
-        await navigator.clipboard.writeText(PERSONAL.email);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        try {
+            await navigator.clipboard.writeText(PERSONAL.email);
+            setCopied(true);
+            const timer = setTimeout(() => setCopied(false), 2500);
+            return () => clearTimeout(timer);
+        } catch {
+            // Fallback for browsers that block clipboard
+            const el = document.createElement('textarea');
+            el.value = PERSONAL.email;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2500);
+        }
     };
 
     return (
         <div
             className={`relative min-h-screen antialiased scroll-smooth selection:bg-emerald-500/20 selection:text-emerald-300 transition-colors duration-300 ${th.root}`}
         >
-            <AmbientBg th={th} />
+            <AmbientBg />
 
             {/* Noise overlay */}
             <div
-                className={`pointer-events-none fixed inset-0 z-[-1] ${isLight ? 'opacity-[0.012]' : 'opacity-[0.018]'}`}
+                className="pointer-events-none fixed inset-0 z-[-1] opacity-[0.02]"
                 style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
                 }}
             />
 
-            <CommandPalette isLight={isLight} />
+            <CommandPalette isLight={false} />
 
             {/* Progress bar */}
             <div
@@ -505,7 +461,7 @@ export default function Portfolio() {
 
             {/* ══ NAV ══ */}
             <nav
-                className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? `${th.nav} backdrop-blur-2xl ` : ''}`}
+                className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${scrolled ? `${th.nav} backdrop-blur-2xl shadow-sm shadow-black/20` : ''}`}
             >
                 <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
                     <a href="#" className="group flex items-center gap-2">
@@ -539,34 +495,15 @@ export default function Portfolio() {
                     </div>
 
                     <div className="hidden md:flex items-center gap-2">
-                        <button
-                            onClick={() => setIsLight(!isLight)}
-                            aria-label="Toggle theme"
-                            className={`p-2 rounded-lg border transition-all duration-300 ${th.toggleBtn}`}
-                        >
-                            {isLight ? (
-                                <Moon className="w-[14px] h-[14px]" />
-                            ) : (
-                                <Sun className="w-[14px] h-[14px]" />
-                            )}
-                        </button>
-
                         <a
                             href="#contact"
-                            className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-[11px] font-mono font-medium bg-emerald-500/[0.08] text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/[0.15] hover:text-emerald-400 hover:border-emerald-400/35 transition-all duration-300"
+                            className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-[11px] font-mono font-medium bg-emerald-500/[0.08] text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/[0.16] hover:text-emerald-400 hover:border-emerald-400/40 transition-all duration-300"
                         >
                             Let&apos;s Talk <ArrowRight className="w-3 h-3" />
                         </a>
                     </div>
 
                     <div className="md:hidden flex items-center gap-2">
-                        <button
-                            onClick={() => setIsLight(!isLight)}
-                            aria-label="Toggle theme"
-                            className={`p-2 rounded-lg border transition-all duration-300 ${th.toggleBtn}`}
-                        >
-                            {isLight ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-                        </button>
                         <button
                             aria-label="Menu"
                             onClick={() => setMenuOpen(!menuOpen)}
@@ -630,7 +567,7 @@ export default function Portfolio() {
                         >
                             {/* Status badge */}
                             <motion.div variants={fadeUp} className="mb-10">
-                                <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/[0.06] border border-emerald-500/18 text-[11px] font-mono font-medium text-emerald-500">
+                                <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/[0.07] border border-emerald-500/20 text-[11px] font-mono font-medium text-emerald-500">
                                     <span className="relative flex h-1.5 w-1.5">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400/50 opacity-75" />
                                         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
@@ -692,9 +629,7 @@ export default function Portfolio() {
                                         <span className="text-emerald-500/50">{c.icon}</span>
                                         {c.t}
                                         {i < 2 && (
-                                            <span
-                                                className={`ml-5 w-px h-3 ${isLight ? 'bg-zinc-200' : 'bg-zinc-800'}`}
-                                            />
+                                            <span className="ml-5 w-px h-3 bg-zinc-700" />
                                         )}
                                     </span>
                                 ))}
@@ -704,7 +639,7 @@ export default function Portfolio() {
                             <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-12">
                                 <a
                                     href="#projects"
-                                    className={`group inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[12px] font-mono font-medium bg-emerald-500/[0.08] text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/[0.15] hover:text-emerald-400 hover:border-emerald-400/35 transition-all duration-300 `}
+                                    className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[12px] font-mono font-medium bg-emerald-500/[0.08] text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/[0.16] hover:text-emerald-400 hover:border-emerald-400/40 transition-all duration-300"
                                 >
                                     View Projects
                                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
@@ -742,9 +677,9 @@ export default function Portfolio() {
                             className="order-1 lg:order-2 flex justify-center"
                         >
                             <div className="relative group">
-                                <div className="absolute -inset-8 rounded-[32px] bg-gradient-to-b from-emerald-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                                <div className="absolute -inset-8 rounded-[32px] bg-gradient-to-b from-emerald-500/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                                 <div
-                                    className={`relative w-52 h-52 sm:w-60 sm:h-60 rounded-3xl overflow-hidden border group-hover:border-emerald-500/25 transition-all duration-500 shadow-2xl ${th.imgBorder}`}
+                                    className={`relative w-52 h-52 sm:w-60 sm:h-60 rounded-3xl overflow-hidden border group-hover:border-emerald-500/30 transition-all duration-500 shadow-2xl ${th.imgBorder}`}
                                 >
                                     <img
                                         src="/Mazaharul Islam Full Stack Software Engineer.PNG"
@@ -782,7 +717,6 @@ export default function Portfolio() {
             <section id="about" className="relative z-[2] py-6 sm:py-6">
                 <div className="max-w-6xl mx-auto px-6">
                     <SectionHeader
-                        th={th}
                         number="01"
                         tag="About"
                         title="Algorithmic Thinking"
@@ -798,7 +732,7 @@ export default function Portfolio() {
                     >
                         {DSA_METRICS.map((m) => (
                             <motion.div key={m.id} variants={scaleIn}>
-                                <GlassCard th={th} className="p-6 text-center">
+                                <GlassCard className="p-6 text-center">
                                     <p className="font-mono text-[24px] sm:text-[30px] font-light text-emerald-400 mb-2 tracking-tighter">
                                         {m.value}
                                     </p>
@@ -819,9 +753,9 @@ export default function Portfolio() {
                         viewport={{ once: true, margin: '-60px' }}
                         variants={fadeUp}
                     >
-                        <GlassCard th={th} className="overflow-hidden" hover={false}>
+                        <GlassCard className="overflow-hidden" hover={false}>
                             <div
-                                className={`flex items-center justify-between px-5 py-3.5 border-b ${isLight ? 'border-zinc-200/60' : 'border-zinc-800/50'}`}
+                                className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-700/30"
                             >
                                 <div className="flex gap-1.5">
                                     <span className="w-2.5 h-2.5 rounded-full bg-red-500/35" />
@@ -847,7 +781,7 @@ export default function Portfolio() {
                                             variants={fadeUp}
                                             className={`group flex items-start gap-3.5 p-3.5 rounded-xl transition-all duration-300 ${th.patternRow}`}
                                         >
-                                            <div className="w-8 h-8 rounded-lg bg-emerald-500/[0.06] border border-emerald-500/12 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-emerald-500/[0.10] transition-colors duration-300">
+                                            <div className="w-8 h-8 rounded-lg bg-emerald-500/[0.07] border border-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-emerald-500/[0.12] transition-colors duration-300">
                                                 <Terminal className="w-3.5 h-3.5 text-emerald-400/55" />
                                             </div>
                                             <div className="flex-1 min-w-0">
@@ -872,10 +806,10 @@ export default function Portfolio() {
                                             <span
                                                 className={`shrink-0 text-[9px] font-mono px-2.5 py-1 rounded-full border ${
                                                     p.level === 'Strong'
-                                                        ? 'border-emerald-500/22 text-emerald-400/75 bg-emerald-500/[0.06]'
+                                                        ? 'border-emerald-500/25 text-emerald-500 bg-emerald-500/[0.07]'
                                                         : p.level === 'Active'
-                                                          ? `border-zinc-700/45 ${isLight ? 'text-zinc-500 bg-zinc-100' : 'text-zinc-400 bg-[#181818]'}`
-                                                          : `border-zinc-800/35 ${isLight ? 'text-zinc-400 bg-zinc-50' : 'text-[#555555] bg-[#111111]'}`
+                                                          ? 'border-zinc-600/40 text-zinc-400 bg-zinc-800/50'
+                                                          : 'border-zinc-700/30 text-zinc-500 bg-zinc-800/30'
                                                 }`}
                                             >
                                                 {p.level}
@@ -886,18 +820,17 @@ export default function Portfolio() {
                             </div>
                         </GlassCard>
                         <br />
-                        <LeetCodeStats isLight={isLight} />
+                        <LeetCodeStats isLight={false} />
                     </motion.div>
                 </div>
             </section>
 
-            <Divider th={th} />
+            <Divider />
 
             {/* ══ SKILLS ══ */}
             <section id="skills" className="relative z-[2] py-24 sm:py-32">
                 <div className="max-w-6xl mx-auto px-6">
                     <SectionHeader
-                        th={th}
                         number="02"
                         tag="Stack"
                         title="Technical Skills"
@@ -913,13 +846,12 @@ export default function Portfolio() {
                         {SKILL_CATEGORIES.map((cat) => (
                             <motion.div key={cat.title} variants={fadeUp}>
                                 <GlassCard
-                                    th={th}
                                     className="p-6 sm:p-7 h-full relative group overflow-hidden"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.012] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.015] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                                     <div className="relative z-10">
                                         <div className="flex items-center gap-3.5 mb-5">
-                                            <div className="p-2.5 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/12 text-emerald-400/55 group-hover:text-emerald-400 transition-colors duration-300">
+                                            <div className="p-2.5 rounded-xl bg-emerald-500/[0.07] border border-emerald-500/15 text-emerald-400/55 group-hover:text-emerald-400 transition-colors duration-300">
                                                 {catIcon(cat.icon)}
                                             </div>
                                             <div>
@@ -961,13 +893,12 @@ export default function Portfolio() {
                 </div>
             </section>
 
-            <Divider th={th} />
+            <Divider />
 
             {/* ══ PROJECTS ══ */}
             <section id="projects" className="relative z-[2] py-24 sm:py-32">
                 <div className="max-w-6xl mx-auto px-6">
                     <SectionHeader
-                        th={th}
                         number="03"
                         tag="Work"
                         title="Selected Projects"
@@ -990,7 +921,6 @@ export default function Portfolio() {
                                 className="group block"
                             >
                                 <GlassCard
-                                    th={th}
                                     className="p-6 sm:p-7 h-full relative overflow-hidden"
                                 >
                                     <div
@@ -1042,13 +972,12 @@ export default function Portfolio() {
                 </div>
             </section>
 
-            <Divider th={th} />
+            <Divider />
 
             {/* ══ CASE STUDIES ══ */}
             <section id="casestudies" className="relative z-[2] py-24 sm:py-32">
                 <div className="max-w-6xl mx-auto px-6">
                     <SectionHeader
-                        th={th}
                         number="04"
                         tag="Deep Dive"
                         title="Engineering Case Studies"
@@ -1063,7 +992,7 @@ export default function Portfolio() {
                     >
                         {DSA_CASE_STUDIES.map((cs) => (
                             <motion.div key={cs.id} variants={fadeUp}>
-                                <CaseCard cs={cs} th={th} />
+                                <CaseCard cs={cs} />
                             </motion.div>
                         ))}
                     </motion.div>
@@ -1076,20 +1005,19 @@ export default function Portfolio() {
                     >
                         {EXTRA_DSA_CASES.map((cs) => (
                             <motion.div key={cs.id} variants={fadeUp}>
-                                <CaseCard cs={cs} th={th} />
+                                <CaseCard cs={cs} />
                             </motion.div>
                         ))}
                     </motion.div>
                 </div>
             </section>
 
-            <Divider th={th} />
+            <Divider />
 
             {/* ══ JOURNEY ══ */}
             <section id="journey" className="relative z-[2] py-24 sm:py-32">
                 <div className="max-w-6xl mx-auto px-6">
                     <SectionHeader
-                        th={th}
                         number="05"
                         tag="Timeline"
                         title="My Journey"
@@ -1121,7 +1049,7 @@ export default function Portfolio() {
                                                 {tlIcon(item.type)}
                                             </div>
                                         </div>
-                                        <GlassCard th={th} className="p-6 sm:p-7">
+                                        <GlassCard className="p-6 sm:p-7">
                                             <span
                                                 className={`inline-block font-mono text-[10px] font-medium px-3 py-1 rounded-lg mb-4 border ${th.yearBadge}`}
                                             >
@@ -1143,7 +1071,7 @@ export default function Portfolio() {
                                                         key={hi}
                                                         className={`flex items-start gap-2.5 text-[11px] ${th.sub}`}
                                                     >
-                                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/45 mt-0.5 shrink-0" />
+                                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/50 mt-0.5 shrink-0" />
                                                         <span className="leading-relaxed font-light">
                                                             {h}
                                                         </span>
@@ -1151,7 +1079,7 @@ export default function Portfolio() {
                                                 ))}
                                             </ul>
                                             <div
-                                                className={`flex flex-wrap gap-1.5 pt-4 border-t ${isLight ? 'border-zinc-200/60' : 'border-zinc-800/50'}`}
+                                                className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-700/30"
                                             >
                                                 {item.techStack.map((t) => (
                                                     <span
@@ -1171,7 +1099,7 @@ export default function Portfolio() {
                 </div>
             </section>
 
-            <Divider th={th} />
+            <Divider />
 
             {/* ══ CONTACT ══ */}
             <section id="contact" className="relative z-[2] py-24 sm:py-32">
@@ -1184,7 +1112,7 @@ export default function Portfolio() {
                         className="max-w-xl mx-auto text-center"
                     >
                         <motion.div variants={fadeUp} className="mb-10">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/[0.06] border border-emerald-500/18 mb-7">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/[0.07] border border-emerald-500/20 mb-7">
                                 <Mail className="w-6 h-6 text-emerald-400/70" />
                             </div>
                             <div className="flex items-center justify-center gap-3 mb-5">
@@ -1222,7 +1150,6 @@ export default function Portfolio() {
                                     variants={scaleIn}
                                 >
                                     <GlassCard
-                                        th={th}
                                         className="flex flex-col items-center gap-3 p-5 group cursor-pointer"
                                     >
                                         <span
@@ -1240,36 +1167,65 @@ export default function Portfolio() {
                             ))}
                         </motion.div>
 
-                        <motion.div variants={fadeUp}>
+                        {/* ── Copy email button — fixed feedback ── */}
+                        <motion.div variants={fadeUp} className="flex flex-col items-center gap-3">
                             <button
                                 onClick={copyMail}
-                                className={`group inline-flex items-center gap-4 px-6 py-3.5 rounded-2xl border transition-all duration-300 ${th.copyBtn}`}
+                                className={`group inline-flex items-center gap-4 px-6 py-3.5 rounded-2xl border transition-all duration-300 ${th.copyBtn} ${
+                                    copied ? 'border-emerald-500/30 bg-emerald-500/[0.06]' : ''
+                                }`}
                             >
-                                <Mail className={`w-4 h-4 ${th.muted}`} />
+                                <Mail
+                                    className={`w-4 h-4 transition-colors duration-300 ${copied ? 'text-emerald-500' : th.muted}`}
+                                />
                                 <span
-                                    className={`text-[12px] font-mono transition-colors duration-300 ${th.copyText}`}
+                                    className={`text-[12px] font-mono transition-colors duration-300 ${
+                                        copied ? 'text-emerald-500' : th.copyText
+                                    }`}
                                 >
                                     {PERSONAL.email}
                                 </span>
                                 <div className={th.divLine} />
-                                {copied ? (
-                                    <Check className="w-4 h-4 text-emerald-400" />
-                                ) : (
-                                    <Copy
-                                        className={`w-4 h-4 group-hover:text-emerald-400 transition-colors duration-300 ${th.muted}`}
-                                    />
-                                )}
+                                <AnimatePresence mode="wait">
+                                    {copied ? (
+                                        <motion.span
+                                            key="check"
+                                            initial={{ scale: 0.5, opacity: 0 }}
+                                            animate={{ scale: 1, opacity: 1 }}
+                                            exit={{ scale: 0.5, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <Check className="w-4 h-4 text-emerald-400" />
+                                        </motion.span>
+                                    ) : (
+                                        <motion.span
+                                            key="copy"
+                                            initial={{ scale: 0.5, opacity: 0 }}
+                                            animate={{ scale: 1, opacity: 1 }}
+                                            exit={{ scale: 0.5, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <Copy
+                                                className={`w-4 h-4 group-hover:text-emerald-400 transition-colors duration-300 ${th.muted}`}
+                                            />
+                                        </motion.span>
+                                    )}
+                                </AnimatePresence>
                             </button>
+
+                            {/* Feedback toast — animates in & out cleanly */}
                             <AnimatePresence>
                                 {copied && (
-                                    <motion.p
-                                        initial={{ opacity: 0, y: 5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0 }}
-                                        className="text-[11px] text-emerald-400/70 font-mono mt-3"
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -6, scale: 0.95 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                                        transition={{ duration: 0.25 }}
+                                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-[11px] font-mono bg-emerald-500/[0.08] border-emerald-500/25 text-emerald-400"
                                     >
-                                        ✓ Copied to clipboard
-                                    </motion.p>
+                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                        Email copied to clipboard
+                                    </motion.div>
                                 )}
                             </AnimatePresence>
                         </motion.div>
@@ -1296,7 +1252,7 @@ export default function Portfolio() {
                             className={`text-[11px] font-mono flex items-center gap-2 ${th.muted}`}
                         >
                             © {new Date().getFullYear()} {PERSONAL.name}
-                            <span className={isLight ? 'text-zinc-300' : 'text-zinc-800'}>·</span>
+                            <span className="text-zinc-600">·</span>
                             Turning Ideas into Reality
                             <Heart className="w-3 h-3 text-emerald-400/35" />
                         </span>
@@ -1326,7 +1282,7 @@ export default function Portfolio() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.2 }}
-                        className={`fixed bottom-6 right-6 z-50 p-3 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:text-emerald-400 hover:border-emerald-500/20 ${th.backTop}`}
+                        className={`fixed bottom-6 right-6 z-50 p-3 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:text-emerald-400 hover:border-emerald-500/25 ${th.backTop}`}
                     >
                         <ChevronDown className="w-4 h-4 rotate-180" />
                     </motion.a>

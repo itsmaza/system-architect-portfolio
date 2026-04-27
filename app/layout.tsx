@@ -1,27 +1,23 @@
 import type { Metadata, Viewport } from 'next';
-import localFont from 'next/font/local';
-import { Inter } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
+// Fonts
 const inter = Inter({
-    variable: '--font-geist-sans',
+    variable: '--font-sans',
     subsets: ['latin'],
     display: 'swap',
     weight: ['200', '300', '400', '500', '600', '700'],
 });
 
-const sfMono = localFont({
-    src: [
-        {
-            path: '../public/SFMonoRegular.otf',
-            weight: '400',
-            style: 'normal',
-        },
-    ],
-    variable: '--font-sf-mono',
+const jetbrainsMono = JetBrains_Mono({
+    variable: '--font-mono',
+    subsets: ['latin'],
     display: 'swap',
+    weight: ['300', '400', '500', '600'],
 });
 
+// Site Config
 const SITE_URL = 'https://mazaharul.site';
 const SITE_NAME = 'Mazaharul Islam';
 const SITE_TITLE = 'Mazaharul Islam | Full Stack Software Engineer';
@@ -29,6 +25,7 @@ const SITE_DESCRIPTION =
     'Full Stack Software Engineer specializing in scalable distributed systems, high-performance architectures, React, Next.js, Node.js, and cloud-native solutions.';
 const OG_IMAGE = `${SITE_URL}/seo.jpg`;
 
+// Metadata
 export const metadata: Metadata = {
     title: { default: SITE_TITLE, template: `%s | ${SITE_NAME}` },
     description: SITE_DESCRIPTION,
@@ -109,6 +106,7 @@ export const metadata: Metadata = {
     category: 'technology',
 };
 
+// Viewport
 export const viewport: Viewport = {
     themeColor: [
         { media: '(prefers-color-scheme: dark)', color: '#0D0D0D' },
@@ -120,6 +118,7 @@ export const viewport: Viewport = {
     colorScheme: 'dark light',
 };
 
+// JSON-LD Schema
 function JsonLd() {
     const personSchema = {
         '@context': 'https://schema.org',
@@ -130,7 +129,10 @@ function JsonLd() {
         jobTitle: 'Full Stack Software Engineer',
         description: SITE_DESCRIPTION,
         email: 'mailto:mazaharul.contact@gmail.com',
-        sameAs: ['https://github.com/mazaharul', 'https://linkedin.com/in/mazaharul'],
+        sameAs: [
+            'https://github.com/mazaharul',
+            'https://linkedin.com/in/mazaharul',
+        ],
         knowsAbout: [
             'Software Engineering',
             'Full Stack Development',
@@ -146,6 +148,7 @@ function JsonLd() {
             addressLocality: 'Bangladesh',
         },
     };
+
     const websiteSchema = {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
@@ -155,6 +158,7 @@ function JsonLd() {
         author: { '@type': 'Person', name: SITE_NAME },
         inLanguage: 'en-US',
     };
+
     const profilePageSchema = {
         '@context': 'https://schema.org',
         '@type': 'ProfilePage',
@@ -186,21 +190,18 @@ function JsonLd() {
     );
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+// Root Layout
+export default function RootLayout({
+    children,
+}: Readonly<{ children: React.ReactNode }>) {
     return (
         <html
             lang="en"
-            className={`scroll-smooth ${inter.variable} ${sfMono.variable}`}
+            className={`scroll-smooth ${inter.variable} ${jetbrainsMono.variable}`}
             suppressHydrationWarning
         >
             <head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link
-                    rel="preconnect"
-                    href="https://fonts.gstatic.com"
-                    crossOrigin="anonymous"
-                />
-                <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+              
                 <JsonLd />
             </head>
 
@@ -212,7 +213,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                     Skip to main content
                 </a>
 
-                <main className="relative z-[1] min-h-screen">{children}</main>
+                <main className="relative z-[1] min-h-screen">
+                    {children}
+                </main>
             </body>
         </html>
     );
