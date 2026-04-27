@@ -820,7 +820,7 @@ export default function Portfolio() {
                             </div>
                         </GlassCard>
                         <br />
-                        <LeetCodeStats isLight={false} />
+                        <LeetCodeStats />
                     </motion.div>
                 </div>
             </section>
