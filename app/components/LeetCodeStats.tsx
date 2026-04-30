@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, TrendingUp, Hash } from 'lucide-react';
 
-const LEETCODE_USERNAME = 'devmazaharul';
+const LEETCODE_USERNAME = 'itsmaza';
 
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
