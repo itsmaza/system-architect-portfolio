@@ -107,6 +107,17 @@ export const SKILL_CATEGORIES: readonly SkillCategory[] = [
 
 export const PROJECTS: readonly Project[] = [
   {
+  id: "finvault",
+  title: "FinVault",
+  subtitle: "AI-Powered Conversational Banking Platform",
+  description:
+    "Built a full-stack AI-native fintech dashboard where users manage finances through natural language. Features a conversational AI interface for real-time transfers, spending analytics, and transaction history — all secured with JWT auth, 4-digit passcode, rate limiting, and human-in-the-loop confirmation before every transaction.",
+  techStack: ["Next.js", "PostgreSQL", "Prisma", "Claude AI", "Docker"],
+  liveUrl: "https://fin-vault-6grp.vercel.app/",
+  status: "live",
+  featured: true,
+},
+  {
     id: "flybismillah",
     title: "flybismillah",
     subtitle: "Global Flight Aggregation Engine",
