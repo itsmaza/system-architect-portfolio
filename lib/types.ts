@@ -48,7 +48,7 @@ export interface DsaMetric {
   id: string;
   value: string;
   label: string;
-  notation: string;
+
   description: string;
 }
 

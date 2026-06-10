@@ -110,41 +110,7 @@ const NAV = [
 ] as const;
 
 /* ═══════════════ EXTRA DSA CASE STUDIES ═══════════════ */
-const EXTRA_DSA_CASES = [
-    {
-        id: 'ex-1',
-        project: 'Flight Search — Fly Bismillah',
-        title: 'Cursor-Based Pagination vs Offset',
-        summary:
-            'Duffel API supports cursor-based pagination. Replaced naive offset with `return_offers: false` + sequential GET — eliminated duplicate offer bugs and cut network overhead ~40%.',
-        complexityFocus: 'Offset: O(n) full scan per page. Cursor: O(1) indexed seek — no re-scan.',
-        impact: 'Zero duplicate flight results in production. Search page load: 2.8s → 1.6s.',
-        stack: ['Next.js', 'Duffel API', 'TypeScript'],
-        liveUrl: 'https://www.flybismillah.com',
-    },
-    {
-        id: 'ex-2',
-        project: 'SMS Dashboard — ClickSend Clone',
-        title: 'Sliding Window for Rate-Limit Throttling',
-        summary:
-            'Fixed sliding-window counter throttles outbound SMS API calls. Redis-backed timestamp ring buffer — no third-party rate-limit lib needed.',
-        complexityFocus: 'Ring buffer: O(1) insert/evict. Memory: O(w) where w = window capacity.',
-        impact: 'API quota violations → 0. 100% of messages delivered within SLA windows.',
-        stack: ['Node.js', 'Redis', 'TypeScript'],
-        liveUrl: '#',
-    },
-    {
-        id: 'ex-3',
-        project: 'E-Commerce — themaza.shop',
-        title: 'Hash Map for O(1) Cart State Lookup',
-        summary:
-            'Replaced linear-scan cart array with a product-id-keyed hash map in Zustand. Quantity updates, additions, and deletions became constant-time regardless of cart size.',
-        complexityFocus: 'Array scan: O(n) per update. Hash map: O(1) amortized for all cart ops.',
-        impact: 'Cart interaction latency: ~12ms → ~1ms at 200-item cart size in benchmarks.',
-        stack: ['Next.js', 'Zustand', 'MongoDB'],
-        liveUrl: 'https://themaza.shop',
-    },
-];
+const EXTRA_DSA_CASES = DSA_CASE_STUDIES;
 
 /* ═══════════════ THEME TOKENS ═══════════════ */
 // DARK: Softened — no more pitch-black. Warm-tinted slate dark.
@@ -203,9 +169,7 @@ type CaseStudy = {
 function AmbientBg() {
     return (
         <div className="pointer-events-none fixed inset-0 z-[-2] overflow-hidden">
-            <div
-                className="absolute -top-[300px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(ellipse,rgba(16,185,129,0.05),transparent_70%)]"
-            />
+            <div className="absolute -top-[300px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(ellipse,rgba(16,185,129,0.05),transparent_70%)]" />
             <div
                 className="absolute inset-0 opacity-[0.022]"
                 style={{
@@ -326,9 +290,7 @@ function Typer({ texts }: { texts: string[] }) {
 
 function CaseCard({ cs }: { cs: CaseStudy }) {
     return (
-        <GlassCard
-            className="p-6 sm:p-7 h-full flex flex-col relative group overflow-hidden"
-        >
+        <GlassCard className="p-6 sm:p-7 h-full flex flex-col relative group overflow-hidden">
             <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-emerald-500/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <p className="text-[10px] font-mono text-emerald-400/55 uppercase tracking-wider mb-5 flex items-center gap-2">
                 <Database className="w-3 h-3" />
@@ -354,9 +316,7 @@ function CaseCard({ cs }: { cs: CaseStudy }) {
                 <TrendingUp className="w-3 h-3 mt-0.5 shrink-0 text-emerald-400/35" />
                 {cs.impact}
             </p>
-            <div
-                className="flex items-center justify-between pt-4 border-t mt-auto border-zinc-700/30"
-            >
+            <div className="flex items-center justify-between pt-4 border-t mt-auto border-zinc-700/30">
                 <div className="flex flex-wrap gap-1.5">
                     {cs.stack.map((t) => (
                         <span
@@ -628,20 +588,19 @@ export default function Portfolio() {
                                     <span key={i} className="inline-flex items-center gap-2">
                                         <span className="text-emerald-500/50">{c.icon}</span>
                                         {c.t}
-                                        {i < 2 && (
-                                            <span className="ml-5 w-px h-3 bg-zinc-700" />
-                                        )}
+                                        {i < 2 && <span className="ml-5 w-px h-3 bg-zinc-700" />}
                                     </span>
                                 ))}
                             </motion.div>
 
                             {/* CTAs */}
                             <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-12">
-                                <a
-                                    href="#projects"
+                                <a 
+                                target="_blank"
+                                    href="/mazaharul_remote_resume.pdf"
                                     className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[12px] font-mono font-medium bg-emerald-500/[0.08] text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/[0.16] hover:text-emerald-400 hover:border-emerald-400/40 transition-all duration-300"
                                 >
-                                    View Projects
+                                    View Resume
                                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
                                 </a>
                                 <a
@@ -754,9 +713,7 @@ export default function Portfolio() {
                         variants={fadeUp}
                     >
                         <GlassCard className="overflow-hidden" hover={false}>
-                            <div
-                                className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-700/30"
-                            >
+                            <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-700/30">
                                 <div className="flex gap-1.5">
                                     <span className="w-2.5 h-2.5 rounded-full bg-red-500/35" />
                                     <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/35" />
@@ -845,9 +802,7 @@ export default function Portfolio() {
                     >
                         {SKILL_CATEGORIES.map((cat) => (
                             <motion.div key={cat.title} variants={fadeUp}>
-                                <GlassCard
-                                    className="p-6 sm:p-7 h-full relative group overflow-hidden"
-                                >
+                                <GlassCard className="p-6 sm:p-7 h-full relative group overflow-hidden">
                                     <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.015] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                                     <div className="relative z-10">
                                         <div className="flex items-center gap-3.5 mb-5">
@@ -920,9 +875,7 @@ export default function Portfolio() {
                                 variants={fadeUp}
                                 className="group block"
                             >
-                                <GlassCard
-                                    className="p-6 sm:p-7 h-full relative overflow-hidden"
-                                >
+                                <GlassCard className="p-6 sm:p-7 h-full relative overflow-hidden">
                                     <div
                                         className={`absolute top-4 right-5 text-[50px] font-extralight leading-none select-none pointer-events-none ${th.numOverlay}`}
                                     >
@@ -983,19 +936,7 @@ export default function Portfolio() {
                         title="Engineering Case Studies"
                         desc="How algorithmic thinking shapes real production decisions."
                     />
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-60px' }}
-                        variants={stagger}
-                        className="grid lg:grid-cols-3 gap-4 mb-4"
-                    >
-                        {DSA_CASE_STUDIES.map((cs) => (
-                            <motion.div key={cs.id} variants={fadeUp}>
-                                <CaseCard cs={cs} />
-                            </motion.div>
-                        ))}
-                    </motion.div>
+                  
                     <motion.div
                         initial="hidden"
                         whileInView="visible"
@@ -1078,9 +1019,7 @@ export default function Portfolio() {
                                                     </li>
                                                 ))}
                                             </ul>
-                                            <div
-                                                className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-700/30"
-                                            >
+                                            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-700/30">
                                                 {item.techStack.map((t) => (
                                                     <span
                                                         key={t}
@@ -1149,9 +1088,7 @@ export default function Portfolio() {
                                     rel="noopener noreferrer"
                                     variants={scaleIn}
                                 >
-                                    <GlassCard
-                                        className="flex flex-col items-center gap-3 p-5 group cursor-pointer"
-                                    >
+                                    <GlassCard className="flex flex-col items-center gap-3 p-5 group cursor-pointer">
                                         <span
                                             className={`group-hover:text-emerald-400 transition-colors duration-300 ${th.muted}`}
                                         >
