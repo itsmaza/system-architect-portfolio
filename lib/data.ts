@@ -28,7 +28,7 @@ export const PERSONAL: PersonalInfo = {
     description:
         'I am a Software Engineer dedicated to building scalable, high-performance distributed systems. With a strong foundation in Data Structures & Algorithms, I engineer robust backend architectures and intuitive frontend interfaces using Next.js, PostgreSQL, and Docker. Currently sharpening my Java skills to tackle complex algorithmic challenges.',
     location: 'Remote · Jessore, Bangladesh',
-    email: 'devmazaharul@gmail.com',
+    email: 'swe.mazaharul@gmail.com',
     resumeUrl: '/resume.pdf',
 } as const;
 
