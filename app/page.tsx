@@ -597,7 +597,7 @@ export default function Portfolio() {
                             <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-12">
                                 <a 
                                 target="_blank"
-                                    href="/mazaharul_remote_resume.pdf"
+                                    href="/full_stack_engineer_resume_best.pdf"
                                     className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[12px] font-mono font-medium bg-emerald-500/[0.08] text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/[0.16] hover:text-emerald-400 hover:border-emerald-400/40 transition-all duration-300"
                                 >
                                     View Resume
