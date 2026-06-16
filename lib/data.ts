@@ -132,18 +132,7 @@ export const PROJECTS: readonly Project[] = [
         description:
             'Responsive voter serial lookup optimized for fast querying with indexed database operations and secure data handling. Implements efficient search algorithms for rapid result retrieval across large datasets.',
         techStack: ['Next.js', 'MongoDB', 'REST APIs', 'Tailwind CSS'],
-        liveUrl: 'https://voterserial.vercel.app',
-        status: 'live',
-        featured: true,
-    },
-    {
-        id: 'mazapay',
-        title: 'mazaPay',
-        subtitle: 'Secure FinTech Transaction System',
-        description:
-            'Focuses on transaction atomicity with ACID-compliant operations, multi-layer JWT authentication, role-based access control, and end-to-end data integrity for financial operations.',
-        techStack: ['Node.js', 'Express', 'PostgreSQL', 'JWT', 'Docker'],
-        liveUrl: 'https://pay.mazaharul.site',
+        liveUrl: 'https://vseq.vercel.app',
         status: 'live',
         featured: true,
     },
