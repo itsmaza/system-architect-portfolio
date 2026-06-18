@@ -110,7 +110,7 @@ export const PROJECTS: readonly Project[] = [
         description:
             'Built a full-stack AI-native fintech dashboard where users manage finances through natural language. Features a conversational AI interface for real-time transfers, spending analytics, and transaction history — all secured with JWT auth, 4-digit passcode, rate limiting, and human-in-the-loop confirmation before every transaction.',
         techStack: ['Next.js', 'PostgreSQL', 'Prisma', 'Claude AI', 'Docker'],
-        liveUrl: 'https://fin-vault-6grp.vercel.app/',
+        liveUrl: 'https://finvaultnew.vercel.app',
         status: 'live',
         featured: true,
     },
